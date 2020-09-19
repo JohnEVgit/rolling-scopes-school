@@ -1,0 +1,97 @@
+@import (less) "normalize.css";
+
+@titleColor: #373737;
+@textColor: #4E4E4E;
+@btnColor: #00AFDB;
+@btnColorHover: #009CC2;
+
+html {
+  color: @textColor;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+::-moz-selection {
+  background: #b3d4fc;
+  text-shadow: none;
+}
+
+::selection {
+  background: #b3d4fc;
+  text-shadow: none;
+}
+
+audio,
+canvas,
+iframe,
+img,
+svg,
+video {
+  vertical-align: middle;
+}
+
+body {
+  font-weight: normal;
+  font-family: 'Roboto', sans-serif;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: @btnColor;
+  text-decoration: none;
+  transition: color 0.2s ease-out;
+  &:hover {
+    color: @btnColorHover;
+  }
+}
+
+button {
+  cursor: pointer;
+}
+
+input, button, select, option, textarea {
+  color: @textColor;
+  font-family: 'Roboto', sans-serif;
+  font-weight: normal;
+}
+
+.hidden,
+[hidden] {
+  display: none !important;
+}
+
+.sr-only {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+.sr-only.focusable:active,
+.sr-only.focusable:focus {
+  clip: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  white-space: inherit;
+  width: auto;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.wrapper {
+  width: 1280px;
+  padding: 0 40px;
+  margin: 0 auto;
+}
