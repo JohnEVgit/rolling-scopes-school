@@ -95,7 +95,7 @@ class Calculator {
                 return;
         }
         this.readyToReset = true;
-        this.currentOperand = result;
+        this.currentOperand = +result.toFixed(12);
         this.previousOperand = '';
         this.operation = undefined;
     }
