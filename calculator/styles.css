@@ -45,6 +45,7 @@ body {
   padding: 10px;
   word-wrap: break-word;
   word-break: break-all;
+  position: relative;
 }
 
 .output .previous-operand {
@@ -55,4 +56,17 @@ body {
 .output .current-operand {
   color: white;
   font-size: 2.5rem;
+}
+
+.alert {
+  position: absolute;
+  padding: 10px;
+  left: 0;
+  right: 0;
+  top: 50%;
+  text-align: center;
+  color: tomato;
+  font-size: 1.2em;
+  word-break: normal;
+  transform: translateY(-50%);
 }

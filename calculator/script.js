@@ -13,7 +13,7 @@ class Calculator {
     }
 
     delete() {
-        this.currentOperand = this.currentOperand.slice(0, -1);
+        this.currentOperand = this.currentOperand.toString().slice(0, -1);
     }
 
     appendNumber(number) {
@@ -25,6 +25,13 @@ class Calculator {
 
     chooseOperation(operation) {
         if (this.currentOperand === '') {
+            if (operation === '-') {
+                calculator.readyToReset = false;
+                this.currentOperand = '-';
+            }
+            return;
+        }
+        if (this.currentOperand === '-') {
             return;
         }
         if (this.previousOperand !== '') {
@@ -32,8 +39,15 @@ class Calculator {
         }
 
         if (operation === '√') {
+            if (this.currentOperand < 0) {
+                this.showError('Квадратный корень из отрицательного числа не существует');
+                this.clear();
+                calculator.readyToReset = false;
+                return;
+            } else {
+                this.currentOperand = Math.sqrt(this.currentOperand);
+            }
             this.readyToReset = true;
-            this.currentOperand = Math.sqrt(this.currentOperand);
             this.operation = undefined;
             return;
         } else if (operation === 'xy') {
@@ -65,7 +79,14 @@ class Calculator {
                 result = previous * current;
                 break;
             case '÷':
-                result = previous / current;
+                if (previous === 0 && current === 0) {
+                    this.showError('Результат не определен');
+                    this.clear();
+                    calculator.readyToReset = false;
+                    return;
+                } else {
+                    result = previous / current;
+                }
                 break;
             case '^':
                 result = previous ** current;
@@ -89,6 +110,11 @@ class Calculator {
     }
 
     getDisplayNumber(number) {
+
+        if (number === '-') {
+            return number;
+        }
+
         const stringNumber = number.toString();
         const integerDigits = parseFloat(stringNumber.split('.')[0]);
         const decimalDigits = stringNumber.split('.')[1];
@@ -106,6 +132,17 @@ class Calculator {
             return integerDisplay;
         }
     }
+    showError(text) {
+        let errorElem = document.createElement('span');
+        errorElem.className = "alert";
+        errorElem.innerText = text;
+        previousOperandTextElem.before(errorElem);
+    }
+    hideError() {
+        if (document.querySelector('.alert')) {
+            document.querySelector('.alert').remove();
+        }
+    }
 }
 
 const numberBtns = document.querySelectorAll('[data-number]');
@@ -116,11 +153,11 @@ const equalsBtn = document.querySelector('[data-equals]');
 const previousOperandTextElem = document.querySelector('[data-previous-operand]');
 const currentOperandTextElem = document.querySelector('[data-current-operand]');
 
-const calculator = new Calculator(previousOperandTextElem, currentOperandTextElem)
+const calculator = new Calculator(previousOperandTextElem, currentOperandTextElem);
 
 numberBtns.forEach(button => {
     button.addEventListener('click', () => {
-
+        calculator.hideError();
         if(calculator.previousOperand === "" &&
             calculator.currentOperand !== "" &&
             calculator.readyToReset) {
@@ -135,22 +172,26 @@ numberBtns.forEach(button => {
 
 operationBtns.forEach(button => {
     button.addEventListener('click', () => {
+        calculator.hideError();
         calculator.chooseOperation(button.innerText);
         calculator.updateDisplay();
     });
 });
 
 deleteBtn.addEventListener('click', () => {
+    calculator.hideError();
     calculator.delete();
     calculator.updateDisplay();
 });
 
 allClearBtn.addEventListener('click', () => {
+    calculator.hideError();
     calculator.clear();
     calculator.updateDisplay();
 });
 
 equalsBtn.addEventListener('click', () => {
+    calculator.hideError();
     calculator.compute();
     calculator.updateDisplay();
 });
