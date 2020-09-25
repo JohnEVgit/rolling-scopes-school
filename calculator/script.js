@@ -30,7 +30,18 @@ class Calculator {
         if (this.previousOperand !== '') {
             this.compute();
         }
-        this.operation = operation;
+
+        if (operation === '√') {
+            this.readyToReset = true;
+            this.currentOperand = Math.sqrt(this.currentOperand);
+            this.operation = undefined;
+            return;
+        } else if (operation === 'xy') {
+            this.operation = '^'
+        } else {
+            this.operation = operation;
+        }
+
         this.previousOperand = this.currentOperand;
         this.currentOperand = '';
     }
@@ -55,6 +66,9 @@ class Calculator {
                 break;
             case '÷':
                 result = previous / current;
+                break;
+            case '^':
+                result = previous ** current;
                 break;
             default:
                 return;
