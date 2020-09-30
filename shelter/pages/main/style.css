@@ -616,7 +616,7 @@ h4,
 .pets-slider-nav-btn.next {
   right: 0;
 }
-.pets-slider-nav-btn.disabled {
+.pets-slider-nav-btn:disabled {
   border-color: #CDCDCD;
   color: #CDCDCD;
   background: transparent;
