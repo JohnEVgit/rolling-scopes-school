@@ -95,7 +95,7 @@ h1, h2, h3, h4 {
 .btn {
   display: inline-block;
   padding: 13px 43px;
-  border: 2px solid #F1CDB3;
+  border: 2px solid @color-primary;
   box-sizing: border-box;
   border-radius: 100px;
   font-weight: normal;
@@ -122,6 +122,11 @@ h1, h2, h3, h4 {
   width: 1200px;
   padding: 0 40px;
   margin: 0 auto;
+}
+
+.page-section {
+  padding: 80px 0 100px;
+  min-width: 1280px;
 }
 
 /* Header styles
@@ -160,10 +165,6 @@ h1, h2, h3, h4 {
   color: @color-light-xl;
 }
 
-
-.header-nav {
-
-}
 .header-nav-ul {
   display: flex;
   list-style: none;
@@ -173,8 +174,7 @@ h1, h2, h3, h4 {
     &:not(:first-child) {
       margin-left: 36px;
     }
-    &.active a,
-    a:hover {
+    &.active a {
       border-bottom-color: @color-primary;
       color: @color-light-s;
     }
@@ -185,9 +185,11 @@ h1, h2, h3, h4 {
     color: @color-dark-s;
     text-decoration: none;
     transition: border-bottom-color 0.2s ease-out, color 0.2s ease-out;
+    &:hover {
+      color: @color-light-s;
+    }
   }
 }
-
 
 
 
@@ -195,8 +197,8 @@ h1, h2, h3, h4 {
    ========================================================================== */
 
 .not-only-section {
-  background: url("../../assets/images/start-screen-gradient-background.png") 50% 50% no-repeat;
-  background-size: cover;
+  background: url("../../assets/images/noise_transparent.png"), radial-gradient(100% 215.42% at 0% 0%, #5B483A 0%, #262425 100%), #211F20;
+  background-size: 132px 130px, auto;
   color: @color-light-xl;
   min-width: 1280px;
 }
@@ -220,6 +222,7 @@ h1, h2, h3, h4 {
   margin: 0 0 42px;
   color: @color-light-xl;
   max-width: 310px;
+  letter-spacing: normal;
 }
 .not-only-info-text {
   margin: 0 0 41px;
@@ -233,6 +236,273 @@ h1, h2, h3, h4 {
 
 
 
-
-/* Not only styles
+/* About styles
    ========================================================================== */
+
+h2, .like-h2 {
+  font-size: 35px;
+  line-height: 130%;
+  letter-spacing: 0.06em;
+  color: @color-dark-l;
+  margin: 0 0 25px;
+  font-family: Georgia, serif;
+}
+h3, .like-h3 {
+  font-size: 20px;
+  line-height: 23px;
+  letter-spacing: 0.06em;
+  color: @color-dark-l;
+  margin: 0 0 30px;
+  font-family: Georgia, serif;
+}
+h4, .like-h4 {
+  font-size: 20px;
+  line-height: 115%;
+  letter-spacing: 0.06em;
+  color: @color-dark-l;
+  margin: 0;
+  font-family: Georgia, serif;
+}
+
+.about-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+}
+.about-img-block {
+  width: 35.2941176%;
+}
+.about-info {
+  width: 50.588235%;
+  > *:last-child {
+    margin: 0;
+  }
+  h2 {
+    max-width: 370px;
+  }
+  p {
+    margin: 0 0 25px;
+  }
+}
+
+
+
+/* Pets styles
+   ========================================================================== */
+
+.pets-section {
+  background: @color-light-l;
+  text-align: center;
+}
+.pets-section-title {
+  margin: 0 auto 60px;
+}
+
+.pets-slider {
+  margin-bottom: 60px;
+  position: relative;
+}
+.pets-slider-row {
+  display: flex;
+  padding: 0 60px;
+}
+.pets-slider-elem {
+  margin: 0 45px;
+  padding: 30px 35px;
+  background-color: @color-light-s;
+  border-radius: 9px;
+  transition: background-color 0.2s ease-out;
+  &:hover {
+    background-color: @color-light-xl;
+  }
+}
+.pets-slider-elem-img {
+  display: block;
+  margin: 0 auto 30px;
+}
+.pets-slider-elem-title {
+  font-size: 20px;
+  line-height: 23px;
+  letter-spacing: 0.06em;
+  margin: 0 0 30px;
+}
+
+.pets-slider-nav-btn {
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  top: 50%;
+  margin-top: -26px;
+  border: 2px solid @color-primary;
+  box-sizing: border-box;
+  border-radius: 50%;
+  color: @color-dark-3xl;
+  background: none;
+  padding: 0;
+  transition: background-color 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out;
+  &:hover {
+    border-color: @color-primary-light;
+    background-color: @color-primary-light;
+  }
+  &.prev {
+    left: 0;
+  }
+  &.next {
+    right: 0;
+  }
+  &.disabled {
+    border-color: @color-dark-s;
+    color: @color-dark-s;
+    background: transparent;
+    cursor: default;
+  }
+  svg {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: block;
+    margin: auto;
+  }
+}
+
+
+
+/* Help styles
+   ========================================================================== */
+
+.help-section {
+  text-align: center;
+}
+.help-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: -20px;
+}
+.help-elem {
+  margin: 35px 60px 20px;
+}
+.help-elem-icon {
+  color: @color-primary;
+  margin-bottom: 30px;
+}
+
+
+
+/* Donation styles
+   ========================================================================== */
+
+.donation-section {
+  background: @color-light-l;
+  min-width: 1280px;
+}
+.donation-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 915px;
+  margin: 1px auto;
+}
+.donation-img-block {
+  width: 55.1912568%;
+}
+.donation-info {
+  width: 41.5300546%;
+  > * {
+    margin-bottom: 20px;
+    &:last-child {
+      margin: 0;
+    }
+  }
+  h2 {
+    max-width: 300px;
+  }
+  p {
+    margin: 0 0 20px;
+  }
+}
+
+.donation-btn-top-info {
+  margin: 0 auto 20px;
+  font-size: 15px;
+  line-height: 110%;
+  font-family: Georgia, serif;
+  letter-spacing: 0.06em;
+}
+.donation-btn {
+  padding: 8px 13px;
+  font-size: 20px;
+  line-height: 115%;
+  display: inline-flex;
+  border-radius: 9px;
+}
+.donation-btn-icon {
+  margin-right: 15px;
+}
+.small-info {
+  font-style: italic;
+  font-size: 12px;
+  line-height: 18px;
+  color: @color-dark-m;
+}
+
+
+
+/* Footer styles
+   ========================================================================== */
+
+.page-footer {
+  background: url("../../assets/images/noise_transparent.png"), radial-gradient(110.67% 538.64% at 5.73% 50%, #513D2F 0%, #1A1A1C 100%), #211F20;
+  background-size: 132px 130px, auto;
+  color: @color-light-xl;
+  padding-top: 40px;
+  min-width: 1280px;
+}
+
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+}
+.footer-col {
+  margin-top: 23px;
+}
+.footer-col-contacts {
+  max-width: 280px;
+}
+.footer-col-location {
+  max-width: 302px;
+}
+.footer-col-title {
+  color: @color-light-xl;
+}
+.footer-col-link-elem {
+  display: flex;
+  align-items: center;
+  min-height: 46px;
+  margin: 0;
+  padding: 7px 0 19px;
+}
+.footer-col-link {
+  color: @color-primary;
+  font-size: 20px;
+  line-height: 115%;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  font-family: Georgia, serif;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease-out;
+  &:hover {
+    color: @color-primary-light;
+  }
+  svg {
+    margin-right: 20px;
+    flex: 1 0 auto;
+  }
+}
