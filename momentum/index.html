@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&family=PT+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="owfont-regular.css"/>
+    <link rel="stylesheet" href="style.css"/>
+    <title>momentum</title>
+</head>
+<body>
+
+<div class="main-info-block">
+    <time class="time"></time>
+    <p class="date"></p>
+    <h1 class="greeting-name-block">
+        <span class="greeting"></span>
+        <span class="name" contenteditable="true"></span>
+    </h1>
+    <h2 class="focus-text">Какая ваша цель на сегодня?</h2>
+    <h2 class="focus-text focus" contenteditable="true"></h2>
+</div>
+
+<div class="weather-block-cont">
+    <div class="weather-block">
+        <span class="weather-error">Город не найден</span>
+        <div class="city" contenteditable="true"></div>
+        <div class="weather-main-info">
+            <i class="weather-icon owf"></i>
+            <div class="temperature"></div>
+        </div>
+        <div class="weather-description"></div>
+        <div class="wind-speed"></div>
+        <div class="humidity"></div>
+    </div>
+
+    <button class="btn change-image-btn" type="button" aria-label="Следующее изображение фона"></button>
+</div>
+
+<div class="quote-cont-outer">
+    <div class="quote-cont">
+        <blockquote class="quote-block">
+            <p class="quote-text">&nbsp;</p>
+            <cite class="author-text">&nbsp;</cite>
+        </blockquote>
+        <button type="button" class="new-quote-btn" aria-label="Следующая цитата"></button>
+    </div>
+</div>
+
+
+
+
+<script src="script.js"></script>
+</body>
+</html>
