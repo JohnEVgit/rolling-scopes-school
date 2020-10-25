@@ -144,18 +144,6 @@ function getImageClick() {
     getImage();
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 // Get Name
 function getName() {
     if (localStorage.getItem('name') === null || localStorage.getItem('name') === '') {
@@ -227,7 +215,6 @@ function setFocus(e) {
     }
 }
 
-
 name.addEventListener('keypress', setName);
 name.addEventListener('blur', setName);
 name.addEventListener('focus', setName);
@@ -235,17 +222,11 @@ focus.addEventListener('keypress', setFocus);
 focus.addEventListener('blur', setFocus);
 focus.addEventListener('focus', setFocus);
 
-
-
-
-// если смена цитаты у вас не работает, вероятно, исчерпался лимит API. в консоли ошибка 403
-// скопируйте код себе и запустите со своего компьютера
+// blockquote widget
 const blockquote = document.querySelector('.quote-text');
 const figcaption = document.querySelector('.author-text');
 const quoteBtn = document.querySelector('.new-quote-btn');
 let blockquoteRot = 360;
-// если в ссылке заменить lang=en на lang=ru, цитаты будут на русском языке
-// префикс https://cors-anywhere.herokuapp.com используем для доступа к данным с других сайтов если браузер возвращает ошибку Cross-Origin Request Blocked
 async function getQuote(e) {
     if (e) {
         quoteBtn.style.transform = 'rotate(' + blockquoteRot + 'deg)';
@@ -264,11 +245,7 @@ async function getQuote(e) {
 quoteBtn.addEventListener('click', getQuote);
 
 
-
-
-
-
-
+// weather widget
 const weatherIcon = document.querySelector('.weather-icon');
 const temperature = document.querySelector('.temperature');
 const windSpeed = document.querySelector('.wind-speed');
@@ -277,7 +254,6 @@ const weatherDescription = document.querySelector('.weather-description');
 const city = document.querySelector('.city');
 const weatherError = document.querySelector('.weather-error');
 
-
 function getStartWeather() {
     if (localStorage.getItem('city') === '' || localStorage.getItem('city') === null) {
         city.textContent = 'Минск';
@@ -285,11 +261,10 @@ function getStartWeather() {
     } else {
         city.textContent = localStorage.getItem('city');
     }
-   // debugger
 }
 
 async function getWeather() {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.textContent}&lang=ru&appid=08f2a575dda978b9c539199e54df03b0&units=metric`;
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.textContent}&lang=ru&appid=4d94a9de516ddaf00d932526ee6bb7cd&units=metric`;
     const res = await fetch(url);
     const data = await res.json();
 
@@ -309,8 +284,6 @@ async function getWeather() {
 
         weatherDescription.textContent = data.weather[0].description;
     }
-
-    //прогноз погоды включает в себя данные о температуре, относительной влажности воздуха, скорости ветра
 }
 
 function setCity(e) {
@@ -329,20 +302,6 @@ function setCity(e) {
 
         }
     }
-    // if (e.type === 'blur') {
-    //     if (e.target.innerText === '' || e.target.innerText.trim().length === 0) {
-    //         localStorage.setItem('name', nameText);
-    //         e.target.innerText = nameText;
-    //     } else {
-    //         localStorage.setItem('name', e.target.innerText);
-    //     }
-    // }
-    //
-    //
-    // if (event.code === 'Enter') {
-    //     getWeather();
-    //     city.blur();
-    // }
 }
 
 city.addEventListener('keypress', setCity);
@@ -350,12 +309,8 @@ city.addEventListener('blur', setCity);
 city.addEventListener('focus', setCity);
 
 
-
-
-
-
 // Run
-//showTime();
+showTime();
 setBgGreet();
 getName();
 getFocus();
