@@ -280,7 +280,7 @@ async function getWeather() {
         temperature.textContent = `${data.main.temp.toFixed(0)}°C`;
 
         windSpeed.textContent = `Скорость ветра: ${data.wind.speed}м/с`;
-        humidity.textContent = `Относительная влажности воздуха: ${data.main.humidity}%`;
+        humidity.textContent = `Относительная влажность воздуха: ${data.main.humidity}%`;
 
         weatherDescription.textContent = data.weather[0].description;
     }
