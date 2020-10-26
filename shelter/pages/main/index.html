@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Cozy House</title>
     <meta name="description" content="Cozy House - Shelter for pets in Boston">
-    <meta name="viewport" content="width=1280">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -18,16 +18,18 @@
                 <h1 class="header-logo-title">Cozy House</h1>
                 <p class="header-logo-text">Shelter for pets in Boston</p>
             </div>
+            <button class="header-mob-menu-btn" aria-label="Menu open"></button>
             <nav class="header-nav">
                 <ul class="header-nav-ul">
                     <li class="active"><a href="#">About the shelter</a></li>
-                    <li><a href="#">Our pets</a></li>
+                    <li><a href="../pets/index.html">Our pets</a></li>
                     <li><a href="#">Help the shelter</a></li>
                     <li><a href="#">Contacts</a></li>
                 </ul>
             </nav>
         </div>
     </div>
+    <div class="page-header-menu-shadow"></div>
 </header>
 
 <main class="page-main">
@@ -37,7 +39,9 @@
                 <div class="not-only-info">
                     <h2 class="not-only-info-title">Not only people need a house</h2>
                     <p class="not-only-info-text">We offer to give a chance to a little and nice puppy with an extremely wide and open heart. He or she will love you more than anybody else in the world, you will see!</p>
-                    <a href="#" class="btn btn-solid not-only-info-btn">Make a friend</a>
+                    <div class="not-only-info-btn-block">
+                        <a href="#" class="btn btn-solid not-only-info-btn">Make a friend</a>
+                    </div>
                 </div>
                 <div class="not-only-img">
                     <img src="../../assets/images/start-screen-puppy.png" alt="Puppy">
@@ -49,13 +53,13 @@
     <section class="about-section page-section">
         <div class="wrapper">
             <div class="about-row">
-                <div class="about-img-block">
-                    <img class="about-img" src="../../assets/images/about-pets.png" alt="Pets">
-                </div>
                 <div class="about-info">
                     <h2>About the shelter “Cozy House”</h2>
                     <p>Currently we have 121 dogs and 342 cats on our hands and statistics show that only 20% of them will find a family. The others will continue to live with us and will be waiting for a lucky chance to become dearly loved.</p>
                     <p>We feed our wards with the best food and make sure that they do not get sick, feel comfortable (including psychologically) and well. We are supported by 87 volunteers and 28 employees of various skill levels. About 12% of the animals are taken by the shelter staff. Taking care of the animals, they become attached to the pets and would hardly ever leave them alone.</p>
+                </div>
+                <div class="about-img-block">
+                    <img class="about-img" src="../../assets/images/about-pets.png" alt="Pets">
                 </div>
             </div>
         </div>
@@ -67,29 +71,35 @@
                 are looking for a house</h2>
             <div class="pets-slider">
                 <div class="pets-slider-row">
-                    <div class="pets-slider-elem">
-                        <img class="pets-slider-elem-img" src="../../assets/images/pet-katrine.png" alt="Katrine">
-                        <p class="pets-slider-elem-title like-h3">Katrine</p>
-                        <a class="pets-slider-elem-btn btn" href="#">Learn more</a>
+                    <div class="pets-elem" data-dialog="pet-dialog">
+                        <img class="pets-elem-img" src="../../assets/images/pets-katrine.png" alt="Katrine">
+                        <div class="pets-elem-info">
+                            <p class="pets-elem-title like-h3">Katrine</p>
+                            <button type="button" class="pets-elem-btn btn">Learn more</button>
+                        </div>
                     </div>
-                    <div class="pets-slider-elem">
-                        <img class="pets-slider-elem-img" src="../../assets/images/pet-jennifer.png" alt="Jennifer">
-                        <p class="pets-slider-elem-title like-h3">Jennifer</p>
-                        <a class="pets-slider-elem-btn btn" href="#">Learn more</a>
+                    <div class="pets-elem" data-dialog="pet-dialog">
+                        <img class="pets-elem-img" src="../../assets/images/pets-jennifer.png" alt="Jennifer">
+                        <div class="pets-elem-info">
+                            <p class="pets-elem-title like-h3">Jennifer</p>
+                            <button type="button" class="pets-elem-btn btn">Learn more</button>
+                        </div>
                     </div>
-                    <div class="pets-slider-elem">
-                        <img class="pets-slider-elem-img" src="../../assets/images/pet-woody.png" alt="Woody">
-                        <p class="pets-slider-elem-title like-h3">Woody</p>
-                        <a class="pets-slider-elem-btn btn" href="#">Learn more</a>
+                    <div class="pets-elem" data-dialog="pet-dialog">
+                        <img class="pets-elem-img" src="../../assets/images/pets-woody.png" alt="Woody">
+                        <div class="pets-elem-info">
+                            <p class="pets-elem-title like-h3">Woody</p>
+                            <button type="button" class="pets-elem-btn btn">Learn more</button>
+                        </div>
                     </div>
                 </div>
-                <div class="pets-slider-nav">
-                    <button class="pets-slider-nav-btn prev disabled" type="button" aria-label="Previous slide">
+                <div class="pets-nav">
+                    <button class="pets-nav-btn prev" type="button" aria-label="Previous slide">
                         <svg width="14" height="6" viewBox="0 0 14 6" fill="none">
                             <path d="M14 2V4H3V6L0 3L3 0V2H14Z" fill="currentColor"/>
                         </svg>
                     </button>
-                    <button class="pets-slider-nav-btn next" type="button" aria-label="Next slide">
+                    <button class="pets-nav-btn next" type="button" aria-label="Next slide">
                         <svg width="14" height="6" viewBox="0 0 14 6" fill="none">
                             <path d="M0 4V2h11V0l3 3-3 3V4H0z" fill="currentColor"/>
                         </svg>
@@ -180,9 +190,6 @@
     <section class="donation-section page-section">
         <div class="wrapper">
             <div class="donation-row">
-                <div class="donation-img-block">
-                    <img class="donation-img" src="../../assets/images/donation-dog.png" alt="Donation dog">
-                </div>
                 <div class="donation-info">
                     <h2>You can also make a donation</h2>
                     <p class="donation-btn-top-info">Name of the bank / Type of bank account</p>
@@ -192,11 +199,38 @@
                         </svg>8380 2880 8028 8791 7435</a>
                     <p class="small-info">Legal information and lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a ipsum at libero sagittis dignissim sed ac diam. Praesent ultrices maximus tortor et vulputate. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
                 </div>
+                <div class="donation-img-block">
+                    <img class="donation-img" src="../../assets/images/donation-dog.png" alt="Donation dog">
+                </div>
             </div>
         </div>
     </section>
 </main>
 
+<div id="pet-dialog" class="dialog">
+    <div class="dialog__overlay"></div>
+    <div class="dialog__content">
+        <div class="dialog__content-inner">
+            <img class="dialog__content-img dialog__pet-img-js" src="../../assets/images/pets-jennifer.png" alt="Jennifer">
+            <div class="dialog__content-info">
+                <h3 class="dialog__content-title dialog__pet-name-js like-h2">Jennifer</h3>
+                <p class="dialog__content-subtitle like-h3"><span class="dialog__pet-type-js">Dog</span> - <span class="dialog__pet-breed-js">Labrador</span></p>
+                <p class="dialog__content-text dialog__pet-description-js">Jennifer is a sweet 2 months old Labrador that is patiently waiting to find a new forever home. This girl really enjoys being able to go outside to run and play, but won't hesitate to play up a storm in the house if she has all of her favorite toys.</p>
+                <ul class="dialog__content-list">
+                    <li><b>Age:</b> <span class="dialog__pet-age-js">2 months</span></li>
+                    <li><b>Inoculations:</b> <span class="dialog__pet-inoculations-js">none</span></li>
+                    <li><b>Diseases:</b> <span class="dialog__pet-diseases-js">none</span></li>
+                    <li><b>Parasites:</b> <span class="dialog__pet-parasites-js">none</span></li>
+                </ul>
+            </div>
+            <button class="dialog-close-btn action" aria-label="Close dialog" data-dialog-close>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M7.426 6l4.279-4.278A1.008 1.008 0 1010.278.295L6 4.574 1.721.295A1.008 1.008 0 10.295 1.722L4.574 6 .295 10.278a1.008 1.008 0 001.426 1.427L6 7.426l4.278 4.279a1.008 1.008 0 101.427-1.427L7.426 6z" fill="#292929"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
 
 <footer class="page-footer">
     <div class="wrapper">
@@ -251,6 +285,6 @@
         </div>
     </div>
 </footer>
-
+<script src="script.js"></script>
 </body>
 </html>
