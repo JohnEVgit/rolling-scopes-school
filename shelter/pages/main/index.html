@@ -71,25 +71,25 @@
                 are looking for a house</h2>
             <div class="pets-slider">
                 <div class="pets-slider-row">
-                    <div class="pets-elem">
+                    <div class="pets-elem" data-dialog="pet-dialog">
                         <img class="pets-elem-img" src="../../assets/images/pets-katrine.png" alt="Katrine">
                         <div class="pets-elem-info">
                             <p class="pets-elem-title like-h3">Katrine</p>
-                            <a class="pets-elem-btn btn" href="#">Learn more</a>
+                            <button type="button" class="pets-elem-btn btn">Learn more</button>
                         </div>
                     </div>
-                    <div class="pets-elem">
+                    <div class="pets-elem" data-dialog="pet-dialog">
                         <img class="pets-elem-img" src="../../assets/images/pets-jennifer.png" alt="Jennifer">
                         <div class="pets-elem-info">
                             <p class="pets-elem-title like-h3">Jennifer</p>
-                            <a class="pets-elem-btn btn" href="#">Learn more</a>
+                            <button type="button" class="pets-elem-btn btn">Learn more</button>
                         </div>
                     </div>
-                    <div class="pets-elem">
+                    <div class="pets-elem" data-dialog="pet-dialog">
                         <img class="pets-elem-img" src="../../assets/images/pets-woody.png" alt="Woody">
                         <div class="pets-elem-info">
                             <p class="pets-elem-title like-h3">Woody</p>
-                            <a class="pets-elem-btn btn" href="#">Learn more</a>
+                            <button type="button" class="pets-elem-btn btn">Learn more</button>
                         </div>
                     </div>
                 </div>
@@ -207,6 +207,30 @@
     </section>
 </main>
 
+<div id="pet-dialog" class="dialog">
+    <div class="dialog__overlay"></div>
+    <div class="dialog__content">
+        <div class="dialog__content-inner">
+            <img class="dialog__content-img dialog__pet-img-js" src="../../assets/images/pets-jennifer.png" alt="Jennifer">
+            <div class="dialog__content-info">
+                <h3 class="dialog__content-title dialog__pet-name-js like-h2">Jennifer</h3>
+                <p class="dialog__content-subtitle like-h3"><span class="dialog__pet-type-js">Dog</span> - <span class="dialog__pet-breed-js">Labrador</span></p>
+                <p class="dialog__content-text dialog__pet-description-js">Jennifer is a sweet 2 months old Labrador that is patiently waiting to find a new forever home. This girl really enjoys being able to go outside to run and play, but won't hesitate to play up a storm in the house if she has all of her favorite toys.</p>
+                <ul class="dialog__content-list">
+                    <li><b>Age:</b> <span class="dialog__pet-age-js">2 months</span></li>
+                    <li><b>Inoculations:</b> <span class="dialog__pet-inoculations-js">none</span></li>
+                    <li><b>Diseases:</b> <span class="dialog__pet-diseases-js">none</span></li>
+                    <li><b>Parasites:</b> <span class="dialog__pet-parasites-js">none</span></li>
+                </ul>
+            </div>
+            <button class="dialog-close-btn action" aria-label="Close dialog" data-dialog-close>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M7.426 6l4.279-4.278A1.008 1.008 0 1010.278.295L6 4.574 1.721.295A1.008 1.008 0 10.295 1.722L4.574 6 .295 10.278a1.008 1.008 0 001.426 1.427L6 7.426l4.278 4.279a1.008 1.008 0 101.427-1.427L7.426 6z" fill="#292929"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
 
 <footer class="page-footer">
     <div class="wrapper">
