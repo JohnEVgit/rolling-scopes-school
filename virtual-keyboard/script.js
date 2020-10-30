@@ -17,6 +17,7 @@ const Keyboard = {
 
     properties: {
         value: '',
+        cursorPosition: 0,
         capsLock: false,
         shift: false,
         rus: false
@@ -55,14 +56,14 @@ const Keyboard = {
             'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']',
             'caps', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'", "\\", 'enter',
             'Shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'en/ru',
-            'space', 'done'
+            'space', 'left', 'right', 'done'
         ];
         const shiftKeyLayout = [
             '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', 'backspace',
             'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '{', '}',
             'caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '"', "|", 'enter',
             'Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', 'en/ru',
-            'space', 'done'
+            'space', 'left', 'right', 'done'
         ];
 
         const keyRuLayout = [
@@ -70,14 +71,14 @@ const Keyboard = {
             'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ',
             'caps', 'ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', "э", "\\", 'enter',
             'Shift', 'я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю', '.', 'en/ru',
-            'space', 'done'
+            'space', 'left', 'right', 'done'
         ];
         const shiftKeyRuLayout = [
             'Ё', '!', '"', '№', ';', '%', ':', '?', '*', '(', ')', '_', '+', 'backspace',
             'Й', 'Ц', 'У', 'К', 'Е', 'Н', 'Г', 'Ш', 'Щ', 'З', 'Х', 'Ъ',
             'caps', 'Ф', 'Ы', 'В', 'А', 'П', 'Р', 'О', 'Л', 'Д', 'Ж', 'Э', "/", 'enter',
             'Shift', 'Я', 'Ч', 'С', 'М', 'И', 'Т', 'Ь', 'Б', 'Ю', ',', 'en/ru',
-            'space', 'done'
+            'space', 'left', 'right', 'done'
         ];
 
         this.elements.textKeys = keyLayout;
@@ -104,9 +105,20 @@ const Keyboard = {
                     keyElement.innerHTML = createIconHTML('backspace');
 
                     keyElement.addEventListener('click', () => {
-                        this.properties.value = this.properties.value.slice(0, -1);
+
+                        this.properties.cursorPosition = this.elements.textarea.selectionStart;
+
+                        let valueStart = this.properties.value.slice(0, this.properties.cursorPosition - 1);
+                        let valueFinish = this.properties.value.slice(this.properties.cursorPosition);
+
+                        this.properties.value = valueStart + valueFinish;
                         this._triggerEvent('oninput');
                         this.elements.textarea.focus();
+
+                        this.properties.cursorPosition -= 1;
+
+                        this.elements.textarea.selectionStart = this.properties.cursorPosition;
+                        this.elements.textarea.selectionEnd = this.properties.cursorPosition;
                     });
 
                     break;
@@ -128,9 +140,20 @@ const Keyboard = {
                     keyElement.innerHTML = createIconHTML('keyboard_return');
 
                     keyElement.addEventListener('click', () => {
-                        this.properties.value += '\n';
+
+                        this.properties.cursorPosition = this.elements.textarea.selectionStart;
+
+                        let valueStart = this.properties.value.slice(0, this.properties.cursorPosition);
+                        let valueFinish = this.properties.value.slice(this.properties.cursorPosition);
+
+                        this.properties.value = valueStart + '\n' + valueFinish;
                         this._triggerEvent('oninput');
                         this.elements.textarea.focus();
+
+                        this.properties.cursorPosition += 1;
+
+                        this.elements.textarea.selectionStart = this.properties.cursorPosition;
+                        this.elements.textarea.selectionEnd = this.properties.cursorPosition;
                     });
 
                     break;
@@ -166,9 +189,50 @@ const Keyboard = {
                     keyElement.innerHTML = createIconHTML('space_bar');
 
                     keyElement.addEventListener('click', () => {
-                        this.properties.value += ' ';
+
+                        this.properties.cursorPosition = this.elements.textarea.selectionStart;
+
+                        let valueStart = this.properties.value.slice(0, this.properties.cursorPosition);
+                        let valueFinish = this.properties.value.slice(this.properties.cursorPosition);
+
+                        this.properties.value = valueStart + ' ' + valueFinish;
+
                         this._triggerEvent('oninput');
                         this.elements.textarea.focus();
+
+                        this.properties.cursorPosition += 1;
+
+                        this.elements.textarea.selectionStart = this.properties.cursorPosition;
+                        this.elements.textarea.selectionEnd = this.properties.cursorPosition;
+                    });
+
+                    break;
+
+                case 'left':
+                    keyElement.innerHTML = createIconHTML('keyboard_arrow_left');
+
+                    keyElement.addEventListener('click', () => {
+                        this.elements.textarea.focus();
+                        if (this.properties.cursorPosition > 0) {
+                            this.properties.cursorPosition -= 1;
+                            this.elements.textarea.selectionStart = this.properties.cursorPosition;
+                            this.elements.textarea.selectionEnd = this.properties.cursorPosition;
+                        }
+                    });
+
+                    break;
+
+
+                case 'right':
+                    keyElement.innerHTML = createIconHTML('keyboard_arrow_right');
+
+                    keyElement.addEventListener('click', () => {
+                        this.elements.textarea.focus();
+                        if (this.properties.cursorPosition < this.properties.value.length) {
+                            this.properties.cursorPosition += 1;
+                            this.elements.textarea.selectionStart = this.properties.cursorPosition;
+                            this.elements.textarea.selectionEnd = this.properties.cursorPosition;
+                        }
                     });
 
                     break;
@@ -188,24 +252,40 @@ const Keyboard = {
                     keyElement.textContent = keyLayout[i].toLowerCase();
 
                     keyElement.addEventListener('click', () => {
+                        this.properties.cursorPosition = this.elements.textarea.selectionStart;
+
+                        let valueStart = this.properties.value.slice(0, this.properties.cursorPosition);
+                        let valueFinish = this.properties.value.slice(this.properties.cursorPosition);
+                        let valueChar = '';
+
                         if (this.properties.shift) {
                             if (this.properties.rus) {
-                                this.properties.value += this.properties.capsLock ? shiftKeyRuLayout[i].toLowerCase() : shiftKeyRuLayout[i].toUpperCase();
+                                valueChar = this.properties.capsLock ? shiftKeyRuLayout[i].toLowerCase() : shiftKeyRuLayout[i].toUpperCase();
                             } else {
-                                this.properties.value += this.properties.capsLock ? shiftKeyLayout[i].toLowerCase() : shiftKeyLayout[i].toUpperCase();
+                                valueChar = this.properties.capsLock ? shiftKeyLayout[i].toLowerCase() : shiftKeyLayout[i].toUpperCase();
                             }
-                            this._toggleShift();
-                            document.querySelector('.keyboard__key--shift').classList.toggle('keyboard__key--active', this.properties.shift);
                         } else {
                             if (this.properties.rus) {
-                                this.properties.value += this.properties.capsLock ? keyRuLayout[i].toUpperCase() : keyRuLayout[i].toLowerCase();
+                                valueChar = this.properties.capsLock ? keyRuLayout[i].toUpperCase() : keyRuLayout[i].toLowerCase();
                             } else {
-                                this.properties.value += this.properties.capsLock ? keyLayout[i].toUpperCase() : keyLayout[i].toLowerCase();
+                                valueChar = this.properties.capsLock ? keyLayout[i].toUpperCase() : keyLayout[i].toLowerCase();
                             }
-
                         }
+
+                        this.properties.value = valueStart + valueChar + valueFinish;
+
+                        if (this.properties.shift) {
+                            this._toggleShift();
+                            document.querySelector('.keyboard__key--shift').classList.toggle('keyboard__key--active', this.properties.shift);
+                        }
+
                         this._triggerEvent('oninput');
                         this.elements.textarea.focus();
+
+                        this.properties.cursorPosition += 1;
+
+                        this.elements.textarea.selectionStart = this.properties.cursorPosition;
+                        this.elements.textarea.selectionEnd = this.properties.cursorPosition;
                     });
 
                     break;
