@@ -5,7 +5,9 @@ const Keyboard = {
         keysContainer: null,
         keys: [],
         textKeys: [],
-        shiftTextKeys: []
+        shiftTextKeys: [],
+        textRuKeys: [],
+        shiftTextRuKeys: []
     },
 
     eventHandlers: {
@@ -17,6 +19,7 @@ const Keyboard = {
         value: '',
         capsLock: false,
         shift: false,
+        rus: false
     },
 
     init() {
@@ -48,22 +51,40 @@ const Keyboard = {
     _createKeys() {
         const fragment = document.createDocumentFragment();
         const keyLayout = [
-            '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'backspace',
-            'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
-            'caps', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'enter',
-            'Shift','z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/',
-            'space','done'
+            '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'backspace',
+            'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']',
+            'caps', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'", "\\", 'enter',
+            'Shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'en/ru',
+            'space', 'done'
         ];
         const shiftKeyLayout = [
-            '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', 'backspace',
-            'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
-            'caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'enter',
-            'Shift','Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?',
-            'space','done'
+            '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', 'backspace',
+            'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '{', '}',
+            'caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '"', "|", 'enter',
+            'Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', 'en/ru',
+            'space', 'done'
+        ];
+
+        const keyRuLayout = [
+            'ё', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'backspace',
+            'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ',
+            'caps', 'ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', "э", "\\", 'enter',
+            'Shift', 'я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю', '.', 'en/ru',
+            'space', 'done'
+        ];
+        const shiftKeyRuLayout = [
+            'Ё', '!', '"', '№', ';', '%', ':', '?', '*', '(', ')', '_', '+', 'backspace',
+            'Й', 'Ц', 'У', 'К', 'Е', 'Н', 'Г', 'Ш', 'Щ', 'З', 'Х', 'Ъ',
+            'caps', 'Ф', 'Ы', 'В', 'А', 'П', 'Р', 'О', 'Л', 'Д', 'Ж', 'Э', "/", 'enter',
+            'Shift', 'Я', 'Ч', 'С', 'М', 'И', 'Т', 'Ь', 'Б', 'Ю', ',', 'en/ru',
+            'space', 'done'
         ];
 
         this.elements.textKeys = keyLayout;
         this.elements.shiftTextKeys = shiftKeyLayout;
+
+        this.elements.textRuKeys = keyRuLayout;
+        this.elements.shiftTextRuKeys = shiftKeyRuLayout;
 
         const createIconHTML = (icon_name) => {
             return `<i class='material-icons'>${icon_name}</i>`;
@@ -72,7 +93,7 @@ const Keyboard = {
         for (let i = 0; i < keyLayout.length; i++) {
 
             const keyElement = document.createElement('button');
-            const insertLineBreak = ['backspace', 'p', 'enter', '/'].indexOf(keyLayout[i]) !== -1;
+            const insertLineBreak = ['backspace', ']', 'enter', 'en/ru'].indexOf(keyLayout[i]) !== -1;
 
             keyElement.setAttribute('type', 'button');
             keyElement.classList.add('keyboard__key');
@@ -125,6 +146,21 @@ const Keyboard = {
 
                     break;
 
+                case 'en/ru':
+                    keyElement.textContent = keyLayout[i];
+
+                    keyElement.innerHTML = '<span>en</span>/<span>ru</span>';
+
+                    keyElement.classList.add('keyboard__key--wide', 'keyboard__key--language');
+
+                    keyElement.addEventListener('click', () => {
+                        this._toggleLanguage();
+                        keyElement.classList.toggle('keyboard__key--active', this.properties.rus);
+                        this.elements.textarea.focus();
+                    });
+
+                    break;
+
                 case 'space':
                     keyElement.classList.add('keyboard__key--extra-wide');
                     keyElement.innerHTML = createIconHTML('space_bar');
@@ -153,11 +189,20 @@ const Keyboard = {
 
                     keyElement.addEventListener('click', () => {
                         if (this.properties.shift) {
-                            this.properties.value += this.properties.capsLock ? shiftKeyLayout[i].toLowerCase() : shiftKeyLayout[i].toUpperCase();
+                            if (this.properties.rus) {
+                                this.properties.value += this.properties.capsLock ? shiftKeyRuLayout[i].toLowerCase() : shiftKeyRuLayout[i].toUpperCase();
+                            } else {
+                                this.properties.value += this.properties.capsLock ? shiftKeyLayout[i].toLowerCase() : shiftKeyLayout[i].toUpperCase();
+                            }
                             this._toggleShift();
                             document.querySelector('.keyboard__key--shift').classList.toggle('keyboard__key--active', this.properties.shift);
                         } else {
-                            this.properties.value += this.properties.capsLock ? keyLayout[i].toUpperCase() : keyLayout[i].toLowerCase();
+                            if (this.properties.rus) {
+                                this.properties.value += this.properties.capsLock ? keyRuLayout[i].toUpperCase() : keyRuLayout[i].toLowerCase();
+                            } else {
+                                this.properties.value += this.properties.capsLock ? keyLayout[i].toUpperCase() : keyLayout[i].toLowerCase();
+                            }
+
                         }
                         this._triggerEvent('oninput');
                         this.elements.textarea.focus();
@@ -199,11 +244,42 @@ const Keyboard = {
         this.properties.shift = !this.properties.shift;
         for (const [i, key] of this.elements.keys.entries()) {
             if (key.childElementCount === 0 && key.textContent.length === 1) {
-                if (this.properties.capsLock) {
-                    key.textContent = this.properties.shift ? key.textContent = this.elements.shiftTextKeys[i].toLowerCase() : key.textContent = this.elements.textKeys[i].toUpperCase();
+                if (this.properties.rus) {
+                    if (this.properties.capsLock) {
+                        key.textContent = this.properties.shift ? key.textContent = this.elements.shiftTextRuKeys[i].toLowerCase() : key.textContent = this.elements.textRuKeys[i].toUpperCase();
+                    } else {
+                        key.textContent = this.properties.shift ? key.textContent = this.elements.shiftTextRuKeys[i] : key.textContent = this.elements.textRuKeys[i];
+                    }
                 } else {
-                    key.textContent = this.properties.shift ? key.textContent = this.elements.shiftTextKeys[i] : key.textContent = this.elements.textKeys[i];
+                    if (this.properties.capsLock) {
+                        key.textContent = this.properties.shift ? key.textContent = this.elements.shiftTextKeys[i].toLowerCase() : key.textContent = this.elements.textKeys[i].toUpperCase();
+                    } else {
+                        key.textContent = this.properties.shift ? key.textContent = this.elements.shiftTextKeys[i] : key.textContent = this.elements.textKeys[i];
+                    }
                 }
+            }
+        }
+    },
+
+    _toggleLanguage() {
+        this.properties.rus = !this.properties.rus;
+
+        for (const [i, key] of this.elements.keys.entries()) {
+            if (key.childElementCount === 0 && key.textContent.length === 1) {
+                if (this.properties.rus) {
+                    if (this.properties.capsLock) {
+                        key.textContent = this.properties.shift ? key.textContent = this.elements.shiftTextRuKeys[i].toLowerCase() : key.textContent = this.elements.textRuKeys[i].toUpperCase();
+                    } else {
+                        key.textContent = this.properties.shift ? key.textContent = this.elements.shiftTextRuKeys[i] : key.textContent = this.elements.textRuKeys[i];
+                    }
+                } else {
+                    if (this.properties.capsLock) {
+                        key.textContent = this.properties.shift ? key.textContent = this.elements.shiftTextKeys[i].toLowerCase() : key.textContent = this.elements.textKeys[i].toUpperCase();
+                    } else {
+                        key.textContent = this.properties.shift ? key.textContent = this.elements.shiftTextKeys[i] : key.textContent = this.elements.textKeys[i];
+                    }
+                }
+
             }
         }
     },

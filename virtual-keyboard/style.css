@@ -73,6 +73,19 @@
   border-radius: 50%;
 }
 
+.keyboard__key--language span {
+  border-bottom: 1px solid transparent;
+}
+.keyboard__key--language span:first-child {
+  border-bottom-color: #ffffff;
+}
+.keyboard__key--language.keyboard__key--active span:first-child {
+  border-bottom-color: transparent;
+}
+.keyboard__key--language.keyboard__key--active span:last-child {
+  border-bottom-color: #ffffff;
+}
+
 .keyboard__key--active::after {
   background: #08ff00;
 }
