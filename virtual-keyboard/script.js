@@ -3,7 +3,9 @@ const Keyboard = {
         textarea: null,
         main: null,
         keysContainer: null,
-        keys: []
+        keys: [],
+        textKeys: [],
+        shiftTextKeys: []
     },
 
     eventHandlers: {
@@ -13,7 +15,8 @@ const Keyboard = {
 
     properties: {
         value: '',
-        capsLock: false
+        capsLock: false,
+        shift: false,
     },
 
     init() {
@@ -48,22 +51,33 @@ const Keyboard = {
             '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'backspace',
             'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
             'caps', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'enter',
-            'done', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '?',
-            'space'
+            'Shift','z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/',
+            'space','done'
         ];
+        const shiftKeyLayout = [
+            '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', 'backspace',
+            'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
+            'caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'enter',
+            'Shift','Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?',
+            'space','done'
+        ];
+
+        this.elements.textKeys = keyLayout;
+        this.elements.shiftTextKeys = shiftKeyLayout;
 
         const createIconHTML = (icon_name) => {
             return `<i class='material-icons'>${icon_name}</i>`;
         };
 
-        keyLayout.forEach(key => {
+        for (let i = 0; i < keyLayout.length; i++) {
+
             const keyElement = document.createElement('button');
-            const insertLineBreak = ['backspace', 'p', 'enter', '?'].indexOf(key) !== -1;
+            const insertLineBreak = ['backspace', 'p', 'enter', '/'].indexOf(keyLayout[i]) !== -1;
 
             keyElement.setAttribute('type', 'button');
             keyElement.classList.add('keyboard__key');
 
-            switch (key) {
+            switch (keyLayout[i]) {
                 case 'backspace':
                     keyElement.classList.add('keyboard__key--wide');
                     keyElement.innerHTML = createIconHTML('backspace');
@@ -100,6 +114,17 @@ const Keyboard = {
 
                     break;
 
+                case 'Shift':
+                    keyElement.textContent = keyLayout[i];
+                    keyElement.classList.add('keyboard__key--wide', 'keyboard__key--activatable', 'keyboard__key--shift');
+                    keyElement.addEventListener('click', () => {
+                        this._toggleShift();
+                        keyElement.classList.toggle('keyboard__key--active', this.properties.shift);
+                        this.elements.textarea.focus();
+                    });
+
+                    break;
+
                 case 'space':
                     keyElement.classList.add('keyboard__key--extra-wide');
                     keyElement.innerHTML = createIconHTML('space_bar');
@@ -124,10 +149,16 @@ const Keyboard = {
                     break;
 
                 default:
-                    keyElement.textContent = key.toLowerCase();
+                    keyElement.textContent = keyLayout[i].toLowerCase();
 
                     keyElement.addEventListener('click', () => {
-                        this.properties.value += this.properties.capsLock ? key.toUpperCase() : key.toLowerCase();
+                        if (this.properties.shift) {
+                            this.properties.value += this.properties.capsLock ? shiftKeyLayout[i].toLowerCase() : shiftKeyLayout[i].toUpperCase();
+                            this._toggleShift();
+                            document.querySelector('.keyboard__key--shift').classList.toggle('keyboard__key--active', this.properties.shift);
+                        } else {
+                            this.properties.value += this.properties.capsLock ? keyLayout[i].toUpperCase() : keyLayout[i].toLowerCase();
+                        }
                         this._triggerEvent('oninput');
                         this.elements.textarea.focus();
                     });
@@ -140,7 +171,7 @@ const Keyboard = {
             if (insertLineBreak) {
                 fragment.appendChild(document.createElement('br'))
             }
-        });
+        }
 
         return fragment;
     },
@@ -154,8 +185,25 @@ const Keyboard = {
     _toggleCapsLock() {
         this.properties.capsLock = !this.properties.capsLock;
         for (const key of this.elements.keys) {
-            if (key.childElementCount === 0) {
-                key.textContent = this.properties.capsLock ? key.textContent.toUpperCase() : key.textContent.toLocaleLowerCase();
+            if (key.childElementCount === 0 && key.textContent.length === 1) {
+                if (this.properties.shift) {
+                    key.textContent = this.properties.capsLock ? key.textContent.toLowerCase() : key.textContent.toUpperCase();
+                } else {
+                    key.textContent = this.properties.capsLock ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
+                }
+            }
+        }
+    },
+
+    _toggleShift() {
+        this.properties.shift = !this.properties.shift;
+        for (const [i, key] of this.elements.keys.entries()) {
+            if (key.childElementCount === 0 && key.textContent.length === 1) {
+                if (this.properties.capsLock) {
+                    key.textContent = this.properties.shift ? key.textContent = this.elements.shiftTextKeys[i].toLowerCase() : key.textContent = this.elements.textKeys[i].toUpperCase();
+                } else {
+                    key.textContent = this.properties.shift ? key.textContent = this.elements.shiftTextKeys[i] : key.textContent = this.elements.textKeys[i];
+                }
             }
         }
     },
