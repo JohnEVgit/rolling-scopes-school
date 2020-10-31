@@ -322,6 +322,9 @@ const Keyboard = {
                     keyElement.classList.add('keyboard__key--wide', 'keyboard__key--activatable');
                     keyElement.addEventListener('click', () => {
                         this.properties.sound = !this.properties.sound;
+
+                        this._toggleBg();
+
                         this._playSound(keyLayout[i]);
 
                         keyElement.classList.toggle('keyboard__key--active', this.properties.sound);
@@ -502,8 +505,23 @@ const Keyboard = {
         }
     },
 
+    _toggleBg() {
+        if (this.properties.rus && this.properties.sound) {
+            this.elements.main.classList.add('keyboard-ru-bg');
+            this.elements.main.classList.remove('keyboard-en-bg');
+        } else if (!this.properties.rus && this.properties.sound) {
+            this.elements.main.classList.add('keyboard-en-bg');
+            this.elements.main.classList.remove('keyboard-ru-bg');
+        } else {
+            this.elements.main.classList.remove('keyboard-ru-bg');
+            this.elements.main.classList.remove('keyboard-en-bg');
+        }
+    },
+
     _toggleLanguage() {
         this.properties.rus = !this.properties.rus;
+
+        this._toggleBg();
 
         for (const [i, key] of this.elements.keys.entries()) {
             if (key.childElementCount === 0 && key.textContent.length === 1) {

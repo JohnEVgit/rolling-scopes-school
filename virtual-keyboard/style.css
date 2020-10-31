@@ -20,10 +20,18 @@
   bottom: 0;
   width: 100%;
   padding: 5px 0;
-  background: midnightblue;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
   user-select: none;
   transition: bottom 0.4s;
+  background-color: midnightblue;
+}
+.keyboard-en-bg {
+  background: midnightblue url("assets/images/keyboard-bg.png") no-repeat 50% 50%;
+  background-size: cover;
+}
+.keyboard-ru-bg {
+  background: midnightblue url("assets/images/keyboard-bg-ru.png") no-repeat 50% 50%;
+  background-size: cover;
 }
 
 .keyboard--hidden {
