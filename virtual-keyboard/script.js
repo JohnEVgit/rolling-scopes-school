@@ -7,7 +7,8 @@ const Keyboard = {
         textKeys: [],
         shiftTextKeys: [],
         textRuKeys: [],
-        shiftTextRuKeys: []
+        shiftTextRuKeys: [],
+        keyCodes: []
     },
 
     eventHandlers: {
@@ -50,8 +51,51 @@ const Keyboard = {
         });
     },
 
+    keyPress(e) {
+
+        let keyNum;
+
+        if (window.event) {
+            keyNum = window.event.keyCode;
+        }
+
+        else if (e) {
+            keyNum = e.which;
+        }
+
+        const arrayPos = this.elements.keyCodes.indexOf(keyNum);
+        if (arrayPos !== -1) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const btn = this.elements.keys[arrayPos];
+
+            if (e.type === 'keydown') {
+                btn.click();
+                btn.classList.add('add-animation');
+            } else {
+                btn.classList.remove('add-animation');
+            }
+        }
+    },
+
+    _triggerEvent(handlerName) {
+        if (typeof  this.eventHandlers[handlerName] == 'function') {
+            this.eventHandlers[handlerName](this.properties.value);
+        }
+    },
+
     _createKeys() {
         const fragment = document.createDocumentFragment();
+
+        const keyCodeLayout = [
+            192, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 189, 187, 8,
+            81, 87, 69, 82, 84, 89, 85, 73, 79, 80, 219, 221,
+            20, 65, 83, 68, 70, 71, 72, 74, 75, 76, 186, 222, 220, 13,
+            16, 90, 88, 67, 86, 66, 78, 77, 188, 190, 191, 'lang',
+            'sound', 32, 37, 39, 'done'
+        ];
+
         const keyLayout = [
             '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'backspace',
             'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']',
@@ -88,6 +132,8 @@ const Keyboard = {
         this.elements.textRuKeys = keyRuLayout;
         this.elements.shiftTextRuKeys = shiftKeyRuLayout;
 
+        this.elements.keyCodes = keyCodeLayout;
+
         const createIconHTML = (icon_name) => {
             return `<i class='material-icons'>${icon_name}</i>`;
         };
@@ -98,6 +144,7 @@ const Keyboard = {
             const insertLineBreak = ['backspace', ']', 'enter', 'lang'].indexOf(keyLayout[i]) !== -1;
 
             keyElement.setAttribute('type', 'button');
+            keyElement.setAttribute('data-code', keyCodeLayout[i]);
             keyElement.classList.add('keyboard__key');
 
             switch (keyLayout[i]) {
@@ -342,12 +389,6 @@ const Keyboard = {
         return fragment;
     },
 
-    _triggerEvent(handlerName) {
-        if (typeof  this.eventHandlers[handlerName] == 'function') {
-            this.eventHandlers[handlerName](this.properties.value);
-        }
-    },
-
     _toggleCapsLock() {
         this.properties.capsLock = !this.properties.capsLock;
         for (const key of this.elements.keys) {
@@ -443,4 +484,12 @@ const Keyboard = {
 
 window.addEventListener('DOMContentLoaded', function () {
     Keyboard.init();
+});
+
+window.addEventListener('keydown', function () {
+    Keyboard.keyPress(event);
+});
+
+window.addEventListener('keyup', function () {
+    Keyboard.keyPress(event);
 });
