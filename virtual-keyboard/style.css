@@ -7,6 +7,12 @@
   height: calc(100vh - 380px);
   min-height: 300px;
 }
+.textarea-focus {
+  outline: midnightblue auto 1px;
+}
+.textarea-focus:focus {
+  outline: midnightblue auto 1px;
+}
 
 .keyboard {
   position: fixed;
@@ -92,4 +98,46 @@
 
 .keyboard__key--dark {
   background: rgba(0, 0, 0, 0.5);
+}
+
+
+@media (max-width: 1023px) {
+  .keyboard__key {
+    width: 5%;
+  }
+  .keyboard__key--wide {
+    width: 12%;
+  }
+  .keyboard__key--extra-wide {
+    width: 36%;
+  }
+}
+
+
+@media (max-width: 767px) {
+  .keyboard__key--activatable::after {
+    top: 6px;
+    right: 6px;
+  }
+  .keyboard__key {
+    height: 40px;
+    margin: 2px;
+  }
+}
+
+
+@media (max-width: 550px) {
+  .keyboard__key--activatable::after {
+    top: 4px;
+    right: 4px;
+  }
+  .keyboard__key {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 399px) {
+  .keyboard__key {
+    margin: 1px;
+  }
 }
