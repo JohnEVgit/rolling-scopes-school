@@ -1,0 +1,124 @@
+@import "normolize.css";
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+button {
+  cursor: pointer;
+}
+.game-body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  width: 404px;
+}
+.game-info {
+  margin-top: auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.game-timer {
+  max-width: 84px;
+}
+.game-body-menu-open .game-menu {
+  display: flex;
+  opacity: 1;
+}
+.game-menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto;
+  display: none;
+  border-radius: 5px;
+  opacity: 0;
+  animation: opacity 0.2s ease-out;
+}
+@keyframes opacity {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.game-field-cont {
+  position: relative;
+  margin-bottom: auto;
+}
+.game-field {
+  position: relative;
+  width: 400px;
+  padding: 2px;
+  border: 1px solid tomato;
+  border-radius: 5px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.chip,
+.empty {
+  height: 96px;
+  width: 96px;
+  margin: 2px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  vertical-align: middle;
+  transition: top 0.2s ease-out, left 0.2s ease-out;
+  position: relative;
+  top: 0;
+  left: 0;
+  outline: none;
+}
+.chip {
+  border: 1px solid tomato;
+  background-color: rgba(255, 99, 71, 0.1);
+  cursor: pointer;
+}
+.chip:hover {
+  box-shadow: 0 0 3px tomato;
+}
+.empty {
+  border: 1px solid transparent;
+  background-color: transparent;
+  outline: none;
+  cursor: default;
+}
+.game-menu button {
+  background: tomato;
+  color: #fff;
+  padding: 8px;
+  border: 2px solid #fff;
+  box-shadow: 0 0 3px #000;
+  margin: 4px 12px;
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  transition: color 0.2s ease-out, background-color 0.2s ease-out;
+}
+.game-menu button:hover {
+  color: tomato;
+  background-color: #fff;
+}
+.game-menu .game-load,
+.game-menu .game-resume,
+.game-menu .game-save {
+  display: none;
+}
+.game-body-load-btn .game-load,
+.game-body-resume-btn .game-resume,
+.game-body-resume-btn .game-save {
+  display: block;
+}
+/*# sourceMappingURL=style.css.map */
