@@ -5,11 +5,14 @@ let timeOnSite = 0;
 let animating = false;
 
 const createGame = () => {
+    let playSound = true;
+
     const fragment = document.createDocumentFragment();
 
     const gameBody = document.createElement('div');
     const gameField = document.createElement('div');
     const gameFieldCont = document.createElement('div');
+    const gameAudio = document.createElement('audio');
 
     // game info
     const gameInfo = document.createElement('div');
@@ -24,7 +27,10 @@ const createGame = () => {
     const resumeGameBtn = document.createElement('button');
     const saveGameBtn = document.createElement('button');
     const loadGameBtn = document.createElement('button');
+    const soundGameBtn = document.createElement('button');
 
+    gameAudio.setAttribute('src', 'assets/audio/sound.mp3');
+    document.body.appendChild(gameAudio);
 
     for (let i = 0; i < 16; i++) {
 
@@ -41,7 +47,7 @@ const createGame = () => {
 
         keyElement.addEventListener('click', function () {
             let that = this;
-            moveChip(gameField,that,gameStepsCount);
+            moveChip(gameField,that,gameStepsCount,gameAudio,playSound);
         });
 
         fragment.appendChild(keyElement);
@@ -89,6 +95,22 @@ const createGame = () => {
     }
     loadGameBtn.addEventListener('click', function () {
         loadGame(gameBody,gameField,gameTimer,gameStepsCount);
+    });
+
+    // game menu [Sound on]
+    soundGameBtn.setAttribute('type', 'button');
+    soundGameBtn.classList.add('game-sound');
+    soundGameBtn.textContent = 'Sound on';
+    gameMenu.appendChild(soundGameBtn);
+
+    soundGameBtn.addEventListener('click', function () {
+        if (playSound) {
+            playSound = false;
+            soundGameBtn.textContent = 'Sound off';
+        } else {
+            playSound = true;
+            soundGameBtn.textContent = 'Sound on';
+        }
     });
 
     // game info
@@ -230,7 +252,7 @@ const loadGame = (gameBody,gameField,gameTimer,gameStepsCount) => {
     gameBody.classList.add('game-body-resume-btn');
 };
 
-const moveChip = (gameField,that,gameStepsCount) => {
+const moveChip = (gameField,that,gameStepsCount,gameAudio,playSound) => {
 
     if (animating) {return;}
 
@@ -247,6 +269,11 @@ const moveChip = (gameField,that,gameStepsCount) => {
         ( currentElemId % 4 === 1 && emptyElemPosition === currentElemId + 1 ) ||
         ( currentElemId % 4 === 2 && emptyElemPosition === currentElemId - 1 ) ||
         ( currentElemId % 4 === 2 && emptyElemPosition === currentElemId + 1 ) ) {
+
+        if (playSound) {
+            gameAudio.currentTime = 0;
+            gameAudio.play();
+        }
 
         currentElem.style.transition = 'top 0.2s ease-out, left 0.2s ease-out';
         if (currentElemId < emptyElemPosition && (emptyElemPosition - currentElemId) % 4 === 0) {
