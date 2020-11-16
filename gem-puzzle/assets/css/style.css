@@ -121,4 +121,31 @@ button {
 .game-body-resume-btn .game-save {
   display: block;
 }
+.game-over-text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto;
+  display: none;
+  border-radius: 5px;
+  padding: 12px;
+  opacity: 0;
+  font-size: 24px;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 0 3px #000;
+  line-height: 1.4em;
+  animation: opacity 0.2s ease-out;
+}
+.game-over-text.active {
+  display: flex;
+  opacity: 1;
+}
 /*# sourceMappingURL=style.css.map */

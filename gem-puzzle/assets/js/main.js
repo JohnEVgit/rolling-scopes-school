@@ -29,6 +29,8 @@ const createGame = () => {
     const loadGameBtn = document.createElement('button');
     const soundGameBtn = document.createElement('button');
 
+    const gameOver = document.createElement('div');
+
     gameAudio.setAttribute('src', 'assets/audio/sound.mp3');
     document.body.appendChild(gameAudio);
 
@@ -47,7 +49,7 @@ const createGame = () => {
 
         keyElement.addEventListener('click', function () {
             let that = this;
-            moveChip(gameField,that,gameStepsCount,gameAudio,playSound);
+            moveChip(gameField,that,gameStepsCount,gameAudio,playSound,gameOver);
         });
 
         fragment.appendChild(keyElement);
@@ -63,7 +65,7 @@ const createGame = () => {
     startGameBtn.textContent = 'Start new game';
     gameMenu.appendChild(startGameBtn);
     startGameBtn.addEventListener('click', function () {
-        startGame(gameBody,gameField,gameTimer);
+        startGame(gameBody,gameField,gameTimer,gameStepsCount);
     });
 
     // game menu [Resume game]
@@ -132,7 +134,7 @@ const createGame = () => {
     gameMenuBtn.innerText = 'Open menu';
     gameInfo.appendChild(gameMenuBtn);
     gameMenuBtn.addEventListener('click', function () {
-        showMenu(gameBody,intervalId);
+        showMenu(gameBody,intervalId,gameOver);
     });
 
     // game field cont
@@ -146,6 +148,11 @@ const createGame = () => {
     gameField.classList.add('game-field');
     gameFieldCont.appendChild(gameField);
     gameField.appendChild(fragment);
+
+
+    // game over message
+    gameOver.classList.add('game-over-text');
+    gameFieldCont.appendChild(gameOver);
 };
 
 // Add Zeros
@@ -153,9 +160,10 @@ const addZero = (n) => {
     return (parseInt(n, 10) < 10 ? '0' : '') + n;
 };
 
-const showMenu = (gameBody,intervalId) => {
+const showMenu = (gameBody,intervalId,gameOver) => {
     clearInterval(intervalId);
     gameBody.classList.add('game-body-menu-open');
+    gameOver.classList.remove('active');
 };
 
 const startTimer = (gameTimer) => {
@@ -181,7 +189,7 @@ const startTimer = (gameTimer) => {
 
 };
 
-const startGame = (gameBody,parent,gameTimer) => {
+const startGame = (gameBody,parent,gameTimer,gameStepsCount) => {
 
     let numArr = [...Array(16).keys()];
     shuffle(numArr);
@@ -190,6 +198,7 @@ const startGame = (gameBody,parent,gameTimer) => {
         parent.children[i].style.order = numArr[i];
     }
 
+    gameStepsCount.textContent = 0;
     timeOnSite = 0;
     startTimer(gameTimer);
     gameBody.classList.remove('game-body-menu-open');
@@ -252,7 +261,7 @@ const loadGame = (gameBody,gameField,gameTimer,gameStepsCount) => {
     gameBody.classList.add('game-body-resume-btn');
 };
 
-const moveChip = (gameField,that,gameStepsCount,gameAudio,playSound) => {
+const moveChip = (gameField,that,gameStepsCount,gameAudio,playSound,gameOver) => {
 
     if (animating) {return;}
 
@@ -277,13 +286,13 @@ const moveChip = (gameField,that,gameStepsCount,gameAudio,playSound) => {
 
         currentElem.style.transition = 'top 0.2s ease-out, left 0.2s ease-out';
         if (currentElemId < emptyElemPosition && (emptyElemPosition - currentElemId) % 4 === 0) {
-            currentElem.style.top = '104px';
+            currentElem.style.top = '100px';
         } else if (currentElemId > emptyElemPosition && (emptyElemPosition - currentElemId) % 4 === 0) {
-            currentElem.style.top = '-104px';
+            currentElem.style.top = '-100px';
         } else if (currentElemId > emptyElemPosition) {
-            currentElem.style.left = '-104px';
+            currentElem.style.left = '-100px';
         } else {
-            currentElem.style.left = '104px';
+            currentElem.style.left = '100px';
         }
 
         gameStepsCount.textContent = +gameStepsCount.textContent + 1;
@@ -292,10 +301,30 @@ const moveChip = (gameField,that,gameStepsCount,gameAudio,playSound) => {
             animating = true;
         });
 
+        let gameFieldList = gameField.children;
+
         currentElem.addEventListener('transitionend', function() {
             animating = false;
             currentElem.style.cssText = "transition: none; top: 0; left: 0; order: " + emptyElemPosition + ";";
             emptyElem.style.order = currentElemId;
+
+            let isGameOver = true;
+
+            for (let item of gameFieldList) {
+                if ( item.dataset.id !== item.style.order ) {
+                    isGameOver = false;
+                }
+            }
+
+            if ( isGameOver ) {
+                gameOver.classList.add('active');
+                let secondsTotal = timeOnSite / 1000;
+                let minutes = Math.floor(secondsTotal / 60);
+                let seconds = Math.floor(secondsTotal) % 60;
+                clearInterval(intervalId);
+                gameOver.textContent = 'Hooray! You solved the puzzle in ' + addZero(minutes) + ":" + addZero(seconds) + ' and ' + gameStepsCount.textContent + ' moves';
+            }
+
         });
     }
 
@@ -303,7 +332,7 @@ const moveChip = (gameField,that,gameStepsCount,gameAudio,playSound) => {
 };
 
 
-document.addEventListener('DOMContentLoaded', function(){ // Аналог $(document).ready(function(){
+document.addEventListener('DOMContentLoaded', function(){
     createGame();
 });
 
