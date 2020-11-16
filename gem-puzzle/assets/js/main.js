@@ -194,6 +194,19 @@ const startGame = (gameBody,parent,gameTimer,gameStepsCount) => {
     let numArr = [...Array(16).keys()];
     shuffle(numArr);
 
+    let hasSolutionCount = 0;
+    for (let i = 1, len = numArr.length-1; i < len; i++){
+        for (let j = i-1; j >= 0; j--){
+            if (numArr[j] > numArr[i]){
+                hasSolutionCount++;
+            }
+        }
+    }
+    if ( !(hasSolutionCount % 2) ) {
+        startGame(gameBody,parent,gameTimer,gameStepsCount);
+        return;
+    }
+
     for (let i = 0; i < parent.children.length; i++) {
         parent.children[i].style.order = numArr[i];
     }
