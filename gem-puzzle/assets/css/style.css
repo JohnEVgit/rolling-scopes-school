@@ -170,7 +170,8 @@ button {
 .game-body-resume-btn .game-save {
   display: block;
 }
-.game-over-text {
+.game-over-text,
+.best-score-cont {
   position: absolute;
   left: 0;
   right: 0;
@@ -197,6 +198,18 @@ button {
   display: flex;
   opacity: 1;
 }
+.game-body-best-score .best-score-cont {
+  display: flex;
+  opacity: 1;
+}
+.best-score-block {
+  font-size: 18px;
+  margin: auto 0;
+  line-height: 1.6em;
+}
+.best-score-block p {
+  margin: 0;
+}
 @media (max-width: 460px) {
   .game-body {
     width: 304px;
@@ -211,6 +224,10 @@ button {
     width: 73px;
     margin: 1px;
     font-size: 12px;
+  }
+  .best-score-block {
+    font-size: 16px;
+    line-height: 1.46em;
   }
 }
 /*# sourceMappingURL=style.css.map */

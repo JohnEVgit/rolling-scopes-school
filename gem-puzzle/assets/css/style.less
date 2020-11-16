@@ -182,8 +182,9 @@ button {
   display: block;
 }
 
-.game-over-text {
-  position: absolute;
+.game-over-text,
+.best-score-cont {
+position: absolute;
   left: 0;
   right: 0;
   top: 0;
@@ -209,7 +210,18 @@ button {
   display: flex;
   opacity: 1;
 }
-
+.game-body-best-score .best-score-cont {
+  display: flex;
+  opacity: 1;
+}
+.best-score-block {
+  font-size: 18px;
+  margin: auto 0;
+  line-height: 1.6em;
+  p {
+    margin: 0;
+  }
+}
 
 
 @media (max-width: 460px) {
@@ -227,5 +239,10 @@ button {
     width: 73px;
     margin: 1px;
     font-size: 12px;
+  }
+
+  .best-score-block {
+    font-size: 16px;
+    line-height: 1.46em;
   }
 }

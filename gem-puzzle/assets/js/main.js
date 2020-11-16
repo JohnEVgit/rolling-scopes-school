@@ -28,8 +28,14 @@ const createGame = () => {
     const saveGameBtn = document.createElement('button');
     const loadGameBtn = document.createElement('button');
     const soundGameBtn = document.createElement('button');
+    const scoreGameBtn = document.createElement('button');
 
     const gameOver = document.createElement('div');
+    const bestScoreBlock = document.createElement('div');
+    const bestScoreCont = document.createElement('div');
+    const bestScoreTitle = document.createElement('div');
+    const bestScoreBack = document.createElement('button');
+
 
     gameAudio.setAttribute('src', 'assets/audio/sound.mp3');
     document.body.appendChild(gameAudio);
@@ -114,6 +120,34 @@ const createGame = () => {
             soundGameBtn.textContent = 'Sound on';
         }
     });
+
+    // game menu [Best scores]
+    scoreGameBtn.setAttribute('type', 'button');
+    scoreGameBtn.classList.add('game-score');
+    scoreGameBtn.textContent = 'Best scores';
+    gameMenu.appendChild(scoreGameBtn);
+    scoreGameBtn.addEventListener('click', function () {
+        bestScores(gameBody,gameField,gameTimer,gameStepsCount,bestScoreBlock);
+    });
+
+    bestScoreTitle.textContent = 'Best scores';
+
+    bestScoreBack.setAttribute('type', 'button');
+    bestScoreBack.classList.add('game-go-back');
+    bestScoreBack.textContent = 'go back';
+    bestScoreBack.addEventListener('click', function () {
+        gameBody.classList.add('game-body-menu-open');
+        gameBody.classList.remove('game-body-best-score');
+        bestScoreBlock.textContent = '';
+    });
+
+    bestScoreBlock.classList.add('best-score-block');
+    bestScoreCont.classList.add('best-score-cont');
+    bestScoreCont.appendChild(bestScoreTitle);
+    bestScoreCont.appendChild(bestScoreBlock);
+    bestScoreCont.appendChild(bestScoreBack);
+    gameFieldCont.appendChild(bestScoreCont);
+
 
     // game info
     gameInfo.classList.add('game-info');
@@ -241,6 +275,30 @@ const saveGame = (gameBody,gameField,gameTimer,gameStepsCount) => {
     gameBody.classList.add('game-body-load-btn');
 };
 
+const bestScores = (gameBody,gameField,gameTimer,gameStepsCount,bestScoreBlock) => {
+
+    if (localStorage.getItem('bestScores')) {
+        let bestScoresArr = localStorage.getItem('bestScores').split(',');
+
+        bestScoresArr.sort(function (a, b) {
+            let first = a.split('Moves ');
+            let last = b.split('Moves ');
+            return first[1] - last[1];
+        });
+        for (let i = 0; i < bestScoresArr.length; i++) {
+
+            const bestScoreRow = document.createElement('p');
+            bestScoreRow.innerText = i+1 + ') ' + bestScoresArr[i];
+            bestScoreBlock.appendChild(bestScoreRow);
+
+        }
+    }
+
+    gameBody.classList.remove('game-body-menu-open');
+    gameBody.classList.add('game-body-best-score');
+};
+
+
 const loadGame = (gameBody,gameField,gameTimer,gameStepsCount) => {
 
     if (localStorage.getItem('gameField')) {
@@ -336,6 +394,12 @@ const moveChip = (gameField,that,gameStepsCount,gameAudio,playSound,gameOver) =>
                 let seconds = Math.floor(secondsTotal) % 60;
                 clearInterval(intervalId);
                 gameOver.textContent = 'Hooray! You solved the puzzle in ' + addZero(minutes) + ":" + addZero(seconds) + ' and ' + gameStepsCount.textContent + ' moves';
+                if (localStorage.getItem('bestScores')) {
+                    localStorage.setItem('bestScores', localStorage.getItem('bestScores') + ',Time ' + addZero(minutes) + ":" + addZero(seconds) + '. Moves ' + gameStepsCount.textContent);
+                } else {
+                    localStorage.setItem('bestScores', 'Time ' + addZero(minutes) + ":" + addZero(seconds) + '. Moves ' + gameStepsCount.textContent);
+                }
+
             }
 
         });
