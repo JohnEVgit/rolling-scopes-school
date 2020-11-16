@@ -299,13 +299,13 @@ const moveChip = (gameField,that,gameStepsCount,gameAudio,playSound,gameOver) =>
 
         currentElem.style.transition = 'top 0.2s ease-out, left 0.2s ease-out';
         if (currentElemId < emptyElemPosition && (emptyElemPosition - currentElemId) % 4 === 0) {
-            currentElem.style.top = '100px';
+            currentElem.style.top = '6.25em';
         } else if (currentElemId > emptyElemPosition && (emptyElemPosition - currentElemId) % 4 === 0) {
-            currentElem.style.top = '-100px';
+            currentElem.style.top = '-6.25em';
         } else if (currentElemId > emptyElemPosition) {
-            currentElem.style.left = '-100px';
+            currentElem.style.left = '-6.25em';
         } else {
-            currentElem.style.left = '100px';
+            currentElem.style.left = '6.25em';
         }
 
         gameStepsCount.textContent = +gameStepsCount.textContent + 1;

@@ -3,6 +3,7 @@
 body {
   padding: 0;
   margin: 0;
+  font-size: 16px;
   font-family: Arial, sans-serif;
 }
 
@@ -90,8 +91,59 @@ button {
 }
 .chip {
   border: 1px solid tomato;
-  background-color: rgba(255, 99, 71, 0.1);
   cursor: pointer;
+  background: rgba(255, 99, 71, 0.1) url('../img/1.jpg');
+  background-size: 400% 400%;
+  text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff;
+  font-weight: bold;
+  &[data-id="1"] {
+    background-position: -100% 0;
+  }
+  &[data-id="2"] {
+    background-position: -200% 0;
+  }
+  &[data-id="3"] {
+    background-position: -300% 0;
+  }
+
+  &[data-id="4"] {
+    background-position: 0 -100%;
+  }
+  &[data-id="5"] {
+    background-position: -100% -100%;
+  }
+  &[data-id="6"] {
+    background-position: -200% -100%;
+  }
+  &[data-id="7"] {
+    background-position: -300% -100%;
+  }
+
+  &[data-id="8"] {
+    background-position: 0 -200%;
+  }
+  &[data-id="8"] {
+    background-position: -100% -200%;
+  }
+  &[data-id="9"] {
+    background-position: -200% -200%;
+  }
+  &[data-id="10"] {
+    background-position: -300% -200%;
+  }
+
+  &[data-id="11"] {
+    background-position: 0 -300%;
+  }
+  &[data-id="12"] {
+    background-position: -100% -300%;
+  }
+  &[data-id="13"] {
+    background-position: -200% -300%;
+  }
+  &[data-id="14"] {
+    background-position: -300% -300%;
+  }
   &:hover {
     box-shadow: 0 0 3px tomato;
   }
@@ -156,4 +208,24 @@ button {
 .game-over-text.active {
   display: flex;
   opacity: 1;
+}
+
+
+
+@media (max-width: 460px) {
+
+  .game-body {
+    width: 304px;
+  }
+  .game-field {
+    width: 300px;
+    padding: 2px;
+  }
+
+  .chip, .empty {
+    height: 73px;
+    width: 73px;
+    margin: 1px;
+    font-size: 12px;
+  }
 }
