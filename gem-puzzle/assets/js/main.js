@@ -40,11 +40,16 @@ const createGame = () => {
     gameAudio.setAttribute('src', 'assets/audio/sound.mp3');
     document.body.appendChild(gameAudio);
 
-    for (let i = 0; i < 16; i++) {
+    let gameFieldSize = 16;
+    let gameFieldSizeArr = [...Array(gameFieldSize).keys()];
+
+    gameFieldSizeArr.forEach(function(item, i) {
 
         const keyElement = document.createElement('button');
         keyElement.setAttribute('type', 'button');
         keyElement.setAttribute('data-id', i);
+
+        keyElement.style.backgroundPosition = -100 * (i % 4) + '% ' + -100 * ((i / 4) ^ 0) + '%';
 
         if (i === 15) {
             keyElement.classList.add('empty');
@@ -55,11 +60,12 @@ const createGame = () => {
 
         keyElement.addEventListener('click', function () {
             let that = this;
-            moveChip(gameField,that,gameStepsCount,gameAudio,playSound,gameOver);
+            moveChip(gameBody,gameField,that,gameStepsCount,gameAudio,playSound,gameOver);
         });
 
         fragment.appendChild(keyElement);
-    }
+
+    });
 
     // game menu
     gameMenu.classList.add('game-menu');
@@ -226,24 +232,35 @@ const startTimer = (gameTimer) => {
 const startGame = (gameBody,parent,gameTimer,gameStepsCount) => {
 
     let numArr = [...Array(16).keys()];
+
     shuffle(numArr);
 
+    let numArrObj = {...numArr};
+    let numArrObjSort = Object.keys(numArrObj).sort(function(a,b){return numArrObj[a]-numArrObj[b]});
+
     let hasSolutionCount = 0;
-    for (let i = 1, len = numArr.length-1; i < len; i++){
-        for (let j = i-1; j >= 0; j--){
-            if (numArr[j] > numArr[i]){
-                hasSolutionCount++;
+
+    numArrObjSort.forEach(function(item, i, arr) {
+        if (+item === 15) {
+            hasSolutionCount += 1 + ((i / 4) ^ 0);
+        } else {
+            for (let j = i + 1; j < arr.length; j++){
+                if (+arr[j] < +arr[i] && +arr[j] !== 15){
+                    hasSolutionCount++;
+                }
             }
         }
-    }
-    if ( !(hasSolutionCount % 2) ) {
+    });
+
+    if ( hasSolutionCount % 2 ) {
         startGame(gameBody,parent,gameTimer,gameStepsCount);
         return;
     }
 
-    for (let i = 0; i < parent.children.length; i++) {
-        parent.children[i].style.order = numArr[i];
-    }
+    const chipsList = [...parent.children];
+    chipsList.forEach(function(item, i) {
+        item.style.order = numArr[i];
+    });
 
     gameStepsCount.textContent = 0;
     timeOnSite = 0;
@@ -279,19 +296,21 @@ const bestScores = (gameBody,gameField,gameTimer,gameStepsCount,bestScoreBlock) 
 
     if (localStorage.getItem('bestScores')) {
         let bestScoresArr = localStorage.getItem('bestScores').split(',');
+        const maxScoresRowCount = 10;
 
         bestScoresArr.sort(function (a, b) {
             let first = a.split('Moves ');
             let last = b.split('Moves ');
             return first[1] - last[1];
         });
-        for (let i = 0; i < bestScoresArr.length; i++) {
 
-            const bestScoreRow = document.createElement('p');
-            bestScoreRow.innerText = i+1 + ') ' + bestScoresArr[i];
-            bestScoreBlock.appendChild(bestScoreRow);
-
-        }
+        bestScoresArr.forEach(function(item, i) {
+            if (i < maxScoresRowCount) {
+                const bestScoreRow = document.createElement('p');
+                bestScoreRow.innerText = i + 1 + ') ' + item;
+                bestScoreBlock.appendChild(bestScoreRow);
+            }
+        });
     }
 
     gameBody.classList.remove('game-body-menu-open');
@@ -301,19 +320,19 @@ const bestScores = (gameBody,gameField,gameTimer,gameStepsCount,bestScoreBlock) 
 
 const loadGame = (gameBody,gameField,gameTimer,gameStepsCount) => {
 
-    if (localStorage.getItem('gameField')) {
-        let numArr = localStorage.getItem('gameField').split(',');
-        for (let i = 0; i < gameField.children.length; i++) {
-            gameField.children[i].style.order = numArr[i];
-        }
-    } else {
-        let numArr = [...Array(16).keys()];
-        shuffle(numArr);
+    const chipsList = [...gameField.children];
+    let numArr = [];
 
-        for (let i = 0; i < gameField.children.length; i++) {
-            gameField.children[i].style.order = numArr[i];
-        }
+    if (localStorage.getItem('gameField')) {
+        numArr = localStorage.getItem('gameField').split(',');
+    } else {
+        numArr = [...Array(16).keys()];
+        shuffle(numArr);
     }
+
+    chipsList.forEach(function(item, i) {
+        item.style.order = numArr[i];
+    });
 
     if (localStorage.getItem('gameTimer')) {
         timeOnSite = +localStorage.getItem('gameTimer');
@@ -332,7 +351,7 @@ const loadGame = (gameBody,gameField,gameTimer,gameStepsCount) => {
     gameBody.classList.add('game-body-resume-btn');
 };
 
-const moveChip = (gameField,that,gameStepsCount,gameAudio,playSound,gameOver) => {
+const moveChip = (gameBody,gameField,that,gameStepsCount,gameAudio,playSound,gameOver) => {
 
     if (animating) {return;}
 
@@ -372,23 +391,27 @@ const moveChip = (gameField,that,gameStepsCount,gameAudio,playSound,gameOver) =>
             animating = true;
         });
 
-        let gameFieldList = gameField.children;
+        const gameFieldList = [...gameField.children];
 
         currentElem.addEventListener('transitionend', function() {
             animating = false;
-            currentElem.style.cssText = "transition: none; top: 0; left: 0; order: " + emptyElemPosition + ";";
+            currentElem.style.transition = "none";
+            currentElem.style.top = 0;
+            currentElem.style.left = 0;
+            currentElem.style.order = emptyElemPosition;
             emptyElem.style.order = currentElemId;
 
             let isGameOver = true;
 
-            for (let item of gameFieldList) {
+            gameFieldList.forEach(function(item, i) {
                 if ( item.dataset.id !== item.style.order ) {
                     isGameOver = false;
                 }
-            }
+            });
 
-            if ( isGameOver ) {
+            if ( isGameOver && !gameOver.classList.contains('active') ) {
                 gameOver.classList.add('active');
+                gameBody.classList.remove('game-body-resume-btn');
                 let secondsTotal = timeOnSite / 1000;
                 let minutes = Math.floor(secondsTotal / 60);
                 let seconds = Math.floor(secondsTotal) % 60;
