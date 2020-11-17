@@ -46,6 +46,8 @@ const createGame = () => {
         keyElement.setAttribute('type', 'button');
         keyElement.setAttribute('data-id', i);
 
+        keyElement.style.backgroundPosition = -100 * (i % 4) + '% ' + -100 * ((i / 4) ^ 0) + '%';
+
         if (i === 15) {
             keyElement.classList.add('empty');
         } else {
@@ -55,7 +57,7 @@ const createGame = () => {
 
         keyElement.addEventListener('click', function () {
             let that = this;
-            moveChip(gameField,that,gameStepsCount,gameAudio,playSound,gameOver);
+            moveChip(gameBody,gameField,that,gameStepsCount,gameAudio,playSound,gameOver);
         });
 
         fragment.appendChild(keyElement);
@@ -226,17 +228,27 @@ const startTimer = (gameTimer) => {
 const startGame = (gameBody,parent,gameTimer,gameStepsCount) => {
 
     let numArr = [...Array(16).keys()];
+
     shuffle(numArr);
 
+    let numArrObj = {...numArr};
+    let numArrObjSort = Object.keys(numArrObj).sort(function(a,b){return numArrObj[a]-numArrObj[b]});
+
     let hasSolutionCount = 0;
-    for (let i = 1, len = numArr.length-1; i < len; i++){
-        for (let j = i-1; j >= 0; j--){
-            if (numArr[j] > numArr[i]){
-                hasSolutionCount++;
+    for (let i = 0; i < numArrObjSort.length; i++){
+
+        if (+numArrObjSort[i] === 15) {
+            hasSolutionCount += 1 + ((i / 4) ^ 0);
+        } else {
+            for (let j = i + 1; j < numArrObjSort.length; j++){
+                if (+numArrObjSort[j] < +numArrObjSort[i] && +numArrObjSort[j] !== 15){
+                    hasSolutionCount++;
+                }
             }
         }
     }
-    if ( !(hasSolutionCount % 2) ) {
+
+    if ( hasSolutionCount % 2 ) {
         startGame(gameBody,parent,gameTimer,gameStepsCount);
         return;
     }
@@ -279,6 +291,7 @@ const bestScores = (gameBody,gameField,gameTimer,gameStepsCount,bestScoreBlock) 
 
     if (localStorage.getItem('bestScores')) {
         let bestScoresArr = localStorage.getItem('bestScores').split(',');
+        const maxScoresRowCount = 10;
 
         bestScoresArr.sort(function (a, b) {
             let first = a.split('Moves ');
@@ -286,11 +299,11 @@ const bestScores = (gameBody,gameField,gameTimer,gameStepsCount,bestScoreBlock) 
             return first[1] - last[1];
         });
         for (let i = 0; i < bestScoresArr.length; i++) {
-
-            const bestScoreRow = document.createElement('p');
-            bestScoreRow.innerText = i+1 + ') ' + bestScoresArr[i];
-            bestScoreBlock.appendChild(bestScoreRow);
-
+            if (i < maxScoresRowCount) {
+                const bestScoreRow = document.createElement('p');
+                bestScoreRow.innerText = i + 1 + ') ' + bestScoresArr[i];
+                bestScoreBlock.appendChild(bestScoreRow);
+            }
         }
     }
 
@@ -332,7 +345,7 @@ const loadGame = (gameBody,gameField,gameTimer,gameStepsCount) => {
     gameBody.classList.add('game-body-resume-btn');
 };
 
-const moveChip = (gameField,that,gameStepsCount,gameAudio,playSound,gameOver) => {
+const moveChip = (gameBody,gameField,that,gameStepsCount,gameAudio,playSound,gameOver) => {
 
     if (animating) {return;}
 
@@ -376,7 +389,10 @@ const moveChip = (gameField,that,gameStepsCount,gameAudio,playSound,gameOver) =>
 
         currentElem.addEventListener('transitionend', function() {
             animating = false;
-            currentElem.style.cssText = "transition: none; top: 0; left: 0; order: " + emptyElemPosition + ";";
+            currentElem.style.transition = "none";
+            currentElem.style.top = 0;
+            currentElem.style.left = 0;
+            currentElem.style.order = emptyElemPosition;
             emptyElem.style.order = currentElemId;
 
             let isGameOver = true;
@@ -387,8 +403,9 @@ const moveChip = (gameField,that,gameStepsCount,gameAudio,playSound,gameOver) =>
                 }
             }
 
-            if ( isGameOver ) {
+            if ( isGameOver && !gameOver.classList.contains('active') ) {
                 gameOver.classList.add('active');
+                gameBody.classList.remove('game-body-resume-btn');
                 let secondsTotal = timeOnSite / 1000;
                 let minutes = Math.floor(secondsTotal / 60);
                 let seconds = Math.floor(secondsTotal) % 60;
