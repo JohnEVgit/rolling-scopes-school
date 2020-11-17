@@ -40,7 +40,10 @@ const createGame = () => {
     gameAudio.setAttribute('src', 'assets/audio/sound.mp3');
     document.body.appendChild(gameAudio);
 
-    for (let i = 0; i < 16; i++) {
+    let gameFieldSize = 16;
+    let gameFieldSizeArr = [...Array(gameFieldSize).keys()];
+
+    gameFieldSizeArr.forEach(function(item, i) {
 
         const keyElement = document.createElement('button');
         keyElement.setAttribute('type', 'button');
@@ -61,7 +64,8 @@ const createGame = () => {
         });
 
         fragment.appendChild(keyElement);
-    }
+
+    });
 
     // game menu
     gameMenu.classList.add('game-menu');
@@ -235,27 +239,28 @@ const startGame = (gameBody,parent,gameTimer,gameStepsCount) => {
     let numArrObjSort = Object.keys(numArrObj).sort(function(a,b){return numArrObj[a]-numArrObj[b]});
 
     let hasSolutionCount = 0;
-    for (let i = 0; i < numArrObjSort.length; i++){
 
-        if (+numArrObjSort[i] === 15) {
+    numArrObjSort.forEach(function(item, i, arr) {
+        if (+item === 15) {
             hasSolutionCount += 1 + ((i / 4) ^ 0);
         } else {
-            for (let j = i + 1; j < numArrObjSort.length; j++){
-                if (+numArrObjSort[j] < +numArrObjSort[i] && +numArrObjSort[j] !== 15){
+            for (let j = i + 1; j < arr.length; j++){
+                if (+arr[j] < +arr[i] && +arr[j] !== 15){
                     hasSolutionCount++;
                 }
             }
         }
-    }
+    });
 
     if ( hasSolutionCount % 2 ) {
         startGame(gameBody,parent,gameTimer,gameStepsCount);
         return;
     }
 
-    for (let i = 0; i < parent.children.length; i++) {
-        parent.children[i].style.order = numArr[i];
-    }
+    const chipsList = [...parent.children];
+    chipsList.forEach(function(item, i) {
+        item.style.order = numArr[i];
+    });
 
     gameStepsCount.textContent = 0;
     timeOnSite = 0;
@@ -298,13 +303,14 @@ const bestScores = (gameBody,gameField,gameTimer,gameStepsCount,bestScoreBlock) 
             let last = b.split('Moves ');
             return first[1] - last[1];
         });
-        for (let i = 0; i < bestScoresArr.length; i++) {
+
+        bestScoresArr.forEach(function(item, i) {
             if (i < maxScoresRowCount) {
                 const bestScoreRow = document.createElement('p');
-                bestScoreRow.innerText = i + 1 + ') ' + bestScoresArr[i];
+                bestScoreRow.innerText = i + 1 + ') ' + item;
                 bestScoreBlock.appendChild(bestScoreRow);
             }
-        }
+        });
     }
 
     gameBody.classList.remove('game-body-menu-open');
@@ -314,19 +320,19 @@ const bestScores = (gameBody,gameField,gameTimer,gameStepsCount,bestScoreBlock) 
 
 const loadGame = (gameBody,gameField,gameTimer,gameStepsCount) => {
 
-    if (localStorage.getItem('gameField')) {
-        let numArr = localStorage.getItem('gameField').split(',');
-        for (let i = 0; i < gameField.children.length; i++) {
-            gameField.children[i].style.order = numArr[i];
-        }
-    } else {
-        let numArr = [...Array(16).keys()];
-        shuffle(numArr);
+    const chipsList = [...gameField.children];
+    let numArr = [];
 
-        for (let i = 0; i < gameField.children.length; i++) {
-            gameField.children[i].style.order = numArr[i];
-        }
+    if (localStorage.getItem('gameField')) {
+        numArr = localStorage.getItem('gameField').split(',');
+    } else {
+        numArr = [...Array(16).keys()];
+        shuffle(numArr);
     }
+
+    chipsList.forEach(function(item, i) {
+        item.style.order = numArr[i];
+    });
 
     if (localStorage.getItem('gameTimer')) {
         timeOnSite = +localStorage.getItem('gameTimer');
@@ -385,7 +391,7 @@ const moveChip = (gameBody,gameField,that,gameStepsCount,gameAudio,playSound,gam
             animating = true;
         });
 
-        let gameFieldList = gameField.children;
+        const gameFieldList = [...gameField.children];
 
         currentElem.addEventListener('transitionend', function() {
             animating = false;
@@ -397,11 +403,11 @@ const moveChip = (gameBody,gameField,that,gameStepsCount,gameAudio,playSound,gam
 
             let isGameOver = true;
 
-            for (let item of gameFieldList) {
+            gameFieldList.forEach(function(item, i) {
                 if ( item.dataset.id !== item.style.order ) {
                     isGameOver = false;
                 }
-            }
+            });
 
             if ( isGameOver && !gameOver.classList.contains('active') ) {
                 gameOver.classList.add('active');
