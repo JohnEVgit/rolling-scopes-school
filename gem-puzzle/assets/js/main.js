@@ -1,44 +1,38 @@
 'use strict';
 
-let intervalId;
-let timeOnSite = 0;
+import {startTimer,addZero,setZeroTime,setTimeByLocalStorage,intervalId,timeOnSite} from "./timer.js";
+
 let animating = false;
+let playSound = true;
 
 const createGame = () => {
-    let playSound = true;
 
     const fragment = document.createDocumentFragment();
+    const bodyElem = document.body;
 
-    const gameBody = document.createElement('div');
-    const gameField = document.createElement('div');
-    const gameFieldCont = document.createElement('div');
-    const gameAudio = document.createElement('audio');
+    const getBodyHTML = () => {
+        return `
+        <audio src="assets/audio/sound.mp3"></audio>
+        <div class="game-body game-body-menu-open">
+            <div class="game-info"></div>
+            <div class="game-field-cont">
+                <div class="game-field"></div>
+                <div class="game-over-text"></div>
+                <div class="game-menu"></div>
+                <div class="best-score-cont"></div>
+            </div>
+        </div>
+    `
+    };
+    bodyElem.innerHTML = getBodyHTML();
 
-    // game info
-    const gameInfo = document.createElement('div');
-    const gameTimer = document.createElement('p');
-    const gameSteps = document.createElement('p');
-    const gameStepsCount = document.createElement('span');
-    const gameMenuBtn = document.createElement('button');
-
-    // game menu
-    const gameMenu = document.createElement('div');
-    const startGameBtn = document.createElement('button');
-    const resumeGameBtn = document.createElement('button');
-    const saveGameBtn = document.createElement('button');
-    const loadGameBtn = document.createElement('button');
-    const soundGameBtn = document.createElement('button');
-    const scoreGameBtn = document.createElement('button');
-
-    const gameOver = document.createElement('div');
-    const bestScoreBlock = document.createElement('div');
-    const bestScoreCont = document.createElement('div');
-    const bestScoreTitle = document.createElement('div');
-    const bestScoreBack = document.createElement('button');
-
-
-    gameAudio.setAttribute('src', 'assets/audio/sound.mp3');
-    document.body.appendChild(gameAudio);
+    const gameBody = bodyElem.querySelector('.game-body');
+    const gameField = bodyElem.querySelector('.game-field');
+    const gameAudio = bodyElem.querySelector('audio');
+    const gameOver = bodyElem.querySelector('.game-over-text');
+    const gameInfo = bodyElem.querySelector('.game-info');
+    const gameMenu = bodyElem.querySelector('.game-menu');
+    const bestScoreCont = bodyElem.querySelector('.best-score-cont');
 
     let gameFieldSize = 16;
     let gameFieldSizeArr = [...Array(gameFieldSize).keys()];
@@ -67,56 +61,65 @@ const createGame = () => {
 
     });
 
-    // game menu
-    gameMenu.classList.add('game-menu');
-    gameFieldCont.appendChild(gameMenu);
+    gameField.appendChild(fragment);
 
-    // game menu [Start new game]
-    startGameBtn.setAttribute('type', 'button');
-    startGameBtn.classList.add('game-start');
-    startGameBtn.textContent = 'Start new game';
-    gameMenu.appendChild(startGameBtn);
-    startGameBtn.addEventListener('click', function () {
-        startGame(gameBody,gameField,gameTimer,gameStepsCount);
+    renderInfo(gameInfo,gameBody,gameOver);
+
+    const gameTimer = gameBody.querySelector('.game-timer');
+    const gameStepsCount = gameBody.querySelector('.game-steps-count');
+
+    renderBestScore(bestScoreCont);
+
+    const bestScoreBack = gameBody.querySelector('.game-go-back');
+    const bestScoreBlock = gameBody.querySelector('.best-score-block');
+
+    bestScoreBack.addEventListener('click', function () {
+        gameBody.classList.add('game-body-menu-open');
+        gameBody.classList.remove('game-body-best-score');
+        bestScoreBlock.textContent = '';
     });
 
-    // game menu [Resume game]
-    resumeGameBtn.setAttribute('type', 'button');
-    resumeGameBtn.classList.add('game-resume');
-    resumeGameBtn.textContent = 'Resume game';
-    gameMenu.appendChild(resumeGameBtn);
+    renderMenu(gameMenu,gameBody,gameField,gameTimer,gameStepsCount,bestScoreBlock);
+
+};
+
+const renderMenu = (gameMenu,gameBody,gameField,gameTimer,gameStepsCount,bestScoreBlock) => {
+    const getMenuHTML = () => {
+        return `
+        <button type="button" class="game-start">Start new game</button>
+        <button type="button" class="game-resume">Resume game</button>
+        <button type="button" class="game-save">Save game</button>
+        <button type="button" class="game-load">Load game</button>
+        <button type="button" class="game-sound">Sound on</button>
+        <button type="button" class="game-score">Best scores</button>
+    `
+    };
+
+    gameMenu.innerHTML = getMenuHTML();
+
+    const startGameBtn = gameMenu.querySelector('.game-start');
+    const resumeGameBtn = gameMenu.querySelector('.game-resume');
+    const saveGameBtn = gameMenu.querySelector('.game-save');
+    const loadGameBtn = gameMenu.querySelector('.game-load');
+    const soundGameBtn = gameMenu.querySelector('.game-sound');
+    const scoreGameBtn = gameMenu.querySelector('.game-score');
+
+    startGameBtn.addEventListener('click', function () {
+        debugger
+        startGame(gameBody,gameField,gameTimer,gameStepsCount);
+    });
     resumeGameBtn.addEventListener('click', function () {
         resumeGame(gameBody,gameTimer);
     });
-
-    // game menu [Save game]
-    saveGameBtn.setAttribute('type', 'button');
-    saveGameBtn.classList.add('game-save');
-    saveGameBtn.textContent = 'Save game';
-    gameMenu.appendChild(saveGameBtn);
     saveGameBtn.addEventListener('click', function () {
         saveGame(gameBody,gameField,gameTimer,gameStepsCount);
     });
-
-    // game menu [Load game]
-    loadGameBtn.setAttribute('type', 'button');
-    loadGameBtn.classList.add('game-load');
-    loadGameBtn.textContent = 'Load game';
-    gameMenu.appendChild(loadGameBtn);
-
     if (localStorage.getItem('gameField') && localStorage.getItem('gameTimer') && localStorage.getItem('gameStepsCount')) {
         gameBody.classList.add('game-body-load-btn');
     }
     loadGameBtn.addEventListener('click', function () {
         loadGame(gameBody,gameField,gameTimer,gameStepsCount);
     });
-
-    // game menu [Sound on]
-    soundGameBtn.setAttribute('type', 'button');
-    soundGameBtn.classList.add('game-sound');
-    soundGameBtn.textContent = 'Sound on';
-    gameMenu.appendChild(soundGameBtn);
-
     soundGameBtn.addEventListener('click', function () {
         if (playSound) {
             playSound = false;
@@ -126,107 +129,49 @@ const createGame = () => {
             soundGameBtn.textContent = 'Sound on';
         }
     });
-
-    // game menu [Best scores]
-    scoreGameBtn.setAttribute('type', 'button');
-    scoreGameBtn.classList.add('game-score');
-    scoreGameBtn.textContent = 'Best scores';
-    gameMenu.appendChild(scoreGameBtn);
     scoreGameBtn.addEventListener('click', function () {
         bestScores(gameBody,gameField,gameTimer,gameStepsCount,bestScoreBlock);
     });
 
-    bestScoreTitle.textContent = 'Best scores';
+};
 
-    bestScoreBack.setAttribute('type', 'button');
-    bestScoreBack.classList.add('game-go-back');
-    bestScoreBack.textContent = 'go back';
-    bestScoreBack.addEventListener('click', function () {
-        gameBody.classList.add('game-body-menu-open');
-        gameBody.classList.remove('game-body-best-score');
-        bestScoreBlock.textContent = '';
-    });
+const renderInfo = (gameInfo,gameBody,gameOver) => {
 
-    bestScoreBlock.classList.add('best-score-block');
-    bestScoreCont.classList.add('best-score-cont');
-    bestScoreCont.appendChild(bestScoreTitle);
-    bestScoreCont.appendChild(bestScoreBlock);
-    bestScoreCont.appendChild(bestScoreBack);
-    gameFieldCont.appendChild(bestScoreCont);
+    const getInfoHTML = () => {
+        return `
+        <p class="game-timer">Time 00:00</p>
+        <p class="game-steps">Moves <span class="game-steps-count">0</span></p>
+        <button class="game-menu-btn" type="button">Open menu</button>
+        `
+    };
 
+    gameInfo.innerHTML = getInfoHTML();
 
-    // game info
-    gameInfo.classList.add('game-info');
-    gameBody.appendChild(gameInfo);
+    const gameMenuBtn = gameBody.querySelector('.game-menu-btn');
 
-    gameTimer.classList.add('game-timer');
-    gameTimer.innerText = 'Time 00:00';
-    gameInfo.appendChild(gameTimer);
-
-    gameSteps.classList.add('game-steps');
-    gameSteps.innerText = 'Moves ';
-    gameInfo.appendChild(gameSteps);
-    gameStepsCount.classList.add('game-steps-count');
-    gameStepsCount.innerText = '0';
-    gameSteps.appendChild(gameStepsCount);
-
-    gameMenuBtn.classList.add('game-menu-btn');
-    gameMenuBtn.innerText = 'Open menu';
-    gameInfo.appendChild(gameMenuBtn);
     gameMenuBtn.addEventListener('click', function () {
         showMenu(gameBody,intervalId,gameOver);
     });
 
-    // game field cont
-    gameFieldCont.classList.add('game-field-cont');
-    gameBody.appendChild(gameFieldCont);
-
-    // game field
-    gameBody.classList.add('game-body','game-body-menu-open');
-    document.body.appendChild(gameBody);
-
-    gameField.classList.add('game-field');
-    gameFieldCont.appendChild(gameField);
-    gameField.appendChild(fragment);
-
-
-    // game over message
-    gameOver.classList.add('game-over-text');
-    gameFieldCont.appendChild(gameOver);
 };
 
-// Add Zeros
-const addZero = (n) => {
-    return (parseInt(n, 10) < 10 ? '0' : '') + n;
+const renderBestScore = (bestScoreCont) => {
+
+    const getBestScoreHTML = () => {
+        return `
+            <div>Best scores</div>
+            <div class="best-score-block"></div>
+            <button type="button" class="game-go-back">go back</button>
+        `
+    };
+
+    bestScoreCont.innerHTML = getBestScoreHTML();
 };
 
 const showMenu = (gameBody,intervalId,gameOver) => {
     clearInterval(intervalId);
     gameBody.classList.add('game-body-menu-open');
     gameOver.classList.remove('active');
-};
-
-const startTimer = (gameTimer) => {
-
-    if (localStorage.getItem('timeOnSite') !== null && localStorage.getItem('timeOnSite') !== '') {
-        timeOnSite = localStorage.getItem('timeOnSite');
-    }
-
-    let secondsTotal = timeOnSite / 1000;
-    let minutes = Math.floor(secondsTotal / 60);
-    let seconds = Math.floor(secondsTotal) % 60;
-
-    gameTimer.innerHTML = "Time " + addZero(minutes) + ":" + addZero(seconds);
-
-    intervalId = setInterval(function () {
-        timeOnSite += 1000;
-        secondsTotal = timeOnSite / 1000;
-        minutes = Math.floor(secondsTotal / 60);
-        seconds = Math.floor(secondsTotal) % 60;
-
-        gameTimer.innerHTML = "Time " + addZero(minutes) + ":" + addZero(seconds);
-    }, 1000);
-
 };
 
 const startGame = (gameBody,parent,gameTimer,gameStepsCount) => {
@@ -263,7 +208,9 @@ const startGame = (gameBody,parent,gameTimer,gameStepsCount) => {
     });
 
     gameStepsCount.textContent = 0;
-    timeOnSite = 0;
+
+    setZeroTime();
+
     startTimer(gameTimer);
     gameBody.classList.remove('game-body-menu-open');
     gameBody.classList.add('game-body-resume-btn');
@@ -334,11 +281,7 @@ const loadGame = (gameBody,gameField,gameTimer,gameStepsCount) => {
         item.style.order = numArr[i];
     });
 
-    if (localStorage.getItem('gameTimer')) {
-        timeOnSite = +localStorage.getItem('gameTimer');
-    } else {
-        timeOnSite = 0;
-    }
+    setTimeByLocalStorage();
 
     if (localStorage.getItem('gameStepsCount')) {
         gameStepsCount.textContent = localStorage.getItem('gameStepsCount');
