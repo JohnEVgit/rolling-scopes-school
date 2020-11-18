@@ -1,7 +1,7 @@
 'use strict';
 
-let intervalId;
-let timeOnSite = 0;
+import {startTimer,addZero,setZeroTime,setTimeByLocalStorage,intervalId,timeOnSite} from "./timer.js";
+
 let animating = false;
 
 const createGame = () => {
@@ -195,38 +195,10 @@ const createGame = () => {
     gameFieldCont.appendChild(gameOver);
 };
 
-// Add Zeros
-const addZero = (n) => {
-    return (parseInt(n, 10) < 10 ? '0' : '') + n;
-};
-
 const showMenu = (gameBody,intervalId,gameOver) => {
     clearInterval(intervalId);
     gameBody.classList.add('game-body-menu-open');
     gameOver.classList.remove('active');
-};
-
-const startTimer = (gameTimer) => {
-
-    if (localStorage.getItem('timeOnSite') !== null && localStorage.getItem('timeOnSite') !== '') {
-        timeOnSite = localStorage.getItem('timeOnSite');
-    }
-
-    let secondsTotal = timeOnSite / 1000;
-    let minutes = Math.floor(secondsTotal / 60);
-    let seconds = Math.floor(secondsTotal) % 60;
-
-    gameTimer.innerHTML = "Time " + addZero(minutes) + ":" + addZero(seconds);
-
-    intervalId = setInterval(function () {
-        timeOnSite += 1000;
-        secondsTotal = timeOnSite / 1000;
-        minutes = Math.floor(secondsTotal / 60);
-        seconds = Math.floor(secondsTotal) % 60;
-
-        gameTimer.innerHTML = "Time " + addZero(minutes) + ":" + addZero(seconds);
-    }, 1000);
-
 };
 
 const startGame = (gameBody,parent,gameTimer,gameStepsCount) => {
@@ -263,7 +235,9 @@ const startGame = (gameBody,parent,gameTimer,gameStepsCount) => {
     });
 
     gameStepsCount.textContent = 0;
-    timeOnSite = 0;
+
+    setZeroTime();
+
     startTimer(gameTimer);
     gameBody.classList.remove('game-body-menu-open');
     gameBody.classList.add('game-body-resume-btn');
@@ -334,11 +308,7 @@ const loadGame = (gameBody,gameField,gameTimer,gameStepsCount) => {
         item.style.order = numArr[i];
     });
 
-    if (localStorage.getItem('gameTimer')) {
-        timeOnSite = +localStorage.getItem('gameTimer');
-    } else {
-        timeOnSite = 0;
-    }
+    setTimeByLocalStorage();
 
     if (localStorage.getItem('gameStepsCount')) {
         gameStepsCount.textContent = localStorage.getItem('gameStepsCount');
