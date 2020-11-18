@@ -105,7 +105,6 @@ const renderMenu = (gameMenu,gameBody,gameField,gameTimer,gameStepsCount,bestSco
     const scoreGameBtn = gameMenu.querySelector('.game-score');
 
     startGameBtn.addEventListener('click', function () {
-        debugger
         startGame(gameBody,gameField,gameTimer,gameStepsCount);
     });
     resumeGameBtn.addEventListener('click', function () {
