@@ -37,7 +37,7 @@ const createGame = () => {
     let gameFieldSize = 16;
     let gameFieldSizeArr = [...Array(gameFieldSize).keys()];
 
-    gameFieldSizeArr.forEach(function(item, i) {
+    gameFieldSizeArr.forEach((item, i) => {
 
         const keyElement = document.createElement('button');
         keyElement.setAttribute('type', 'button');
@@ -63,7 +63,7 @@ const createGame = () => {
 
     gameField.appendChild(fragment);
 
-    renderInfo(gameInfo,gameBody,gameOver);
+    getInfoHTML(gameInfo,[gameBody,gameOver]);
 
     const gameTimer = gameBody.querySelector('.game-timer');
     const gameStepsCount = gameBody.querySelector('.game-steps-count');
@@ -84,74 +84,97 @@ const createGame = () => {
 };
 
 const renderMenu = (gameMenu,gameBody,gameField,gameTimer,gameStepsCount,bestScoreBlock) => {
-    const getMenuHTML = () => {
-        return `
-        <button type="button" class="game-start">Start new game</button>
-        <button type="button" class="game-resume">Resume game</button>
-        <button type="button" class="game-save">Save game</button>
-        <button type="button" class="game-load">Load game</button>
-        <button type="button" class="game-sound">Sound on</button>
-        <button type="button" class="game-score">Best scores</button>
-    `
+
+    const handleGameStart = function () {
+        startGame(gameBody, gameField, gameTimer, gameStepsCount);
+    };
+    const handleGameResume = function () {
+        resumeGame(gameBody, gameTimer);
+    };
+    const handleGameSave = function () {
+        saveGame(gameBody, gameField, gameTimer, gameStepsCount);
+    };
+    const handleGameLoad = function () {
+        loadGame(gameBody, gameField, gameTimer, gameStepsCount);
+    };
+    const handleGameSound = function () {
+        if (playSound) {
+            playSound = false;
+            this.textContent = 'Sound off';
+        } else {
+            playSound = true;
+            this.textContent = 'Sound on';
+        }
+    };
+    const handleGameScore = function () {
+        bestScores(gameBody, gameField, gameTimer, gameStepsCount, bestScoreBlock);
     };
 
-    gameMenu.innerHTML = getMenuHTML();
-
-    const startGameBtn = gameMenu.querySelector('.game-start');
-    const resumeGameBtn = gameMenu.querySelector('.game-resume');
-    const saveGameBtn = gameMenu.querySelector('.game-save');
-    const loadGameBtn = gameMenu.querySelector('.game-load');
-    const soundGameBtn = gameMenu.querySelector('.game-sound');
-    const scoreGameBtn = gameMenu.querySelector('.game-score');
-
-    startGameBtn.addEventListener('click', function () {
-        startGame(gameBody,gameField,gameTimer,gameStepsCount);
-    });
-    resumeGameBtn.addEventListener('click', function () {
-        resumeGame(gameBody,gameTimer);
-    });
-    saveGameBtn.addEventListener('click', function () {
-        saveGame(gameBody,gameField,gameTimer,gameStepsCount);
-    });
     if (localStorage.getItem('gameField') && localStorage.getItem('gameTimer') && localStorage.getItem('gameStepsCount')) {
         gameBody.classList.add('game-body-load-btn');
     }
-    loadGameBtn.addEventListener('click', function () {
-        loadGame(gameBody,gameField,gameTimer,gameStepsCount);
-    });
-    soundGameBtn.addEventListener('click', function () {
-        if (playSound) {
-            playSound = false;
-            soundGameBtn.textContent = 'Sound off';
-        } else {
-            playSound = true;
-            soundGameBtn.textContent = 'Sound on';
+
+    const menuBtnsData = [
+        {
+            class: 'game-start',
+            title: 'Start new game',
+            handler: handleGameStart
+        }, {
+            class: 'game-resume',
+            title: 'Resume game',
+            handler: handleGameResume
+        }, {
+            class: 'game-save',
+            title: 'Save game',
+            handler: handleGameSave
+        }, {
+            class: 'game-load',
+            title: 'Load game',
+            handler: handleGameLoad
+        }, {
+            class: 'game-sound',
+            title: 'Sound on',
+            handler: handleGameSound
+        }, {
+            class: 'game-score',
+            title: 'Best scores',
+            handler: handleGameScore
         }
-    });
-    scoreGameBtn.addEventListener('click', function () {
-        bestScores(gameBody,gameField,gameTimer,gameStepsCount,bestScoreBlock);
+    ];
+
+    const menuContainer = document.createDocumentFragment();
+
+    menuBtnsData.map((item) => {
+
+        const btn = document.createElement('button');
+
+        btn.classList.add(item.class);
+        btn.textContent = item.title;
+
+        btn.setAttribute('type', 'button');
+        btn.addEventListener('click', item.handler);
+
+        menuContainer.appendChild(btn);
     });
 
+    gameMenu.appendChild(menuContainer);
 };
 
-const renderInfo = (gameInfo,gameBody,gameOver) => {
+const getInfoHTML = (gameInfo, handler) => {
+    const btn = document.createElement('button');
+    btn.classList.add('game-menu-btn');
+    btn.textContent = 'Open menu';
+    btn.setAttribute('type', 'button');
 
-    const getInfoHTML = () => {
-        return `
+    gameInfo.innerHTML = `
         <p class="game-timer">Time 00:00</p>
-        <p class="game-steps">Moves <span class="game-steps-count">0</span></p>
-        <button class="game-menu-btn" type="button">Open menu</button>
-        `
-    };
+        <p class="game-steps">Moves <span class="game-steps-count">0</span></p> `;
 
-    gameInfo.innerHTML = getInfoHTML();
+    gameInfo.appendChild(btn);
 
-    const gameMenuBtn = gameBody.querySelector('.game-menu-btn');
-
-    gameMenuBtn.addEventListener('click', function () {
-        showMenu(gameBody,intervalId,gameOver);
+    btn.addEventListener('click', function () {
+        showMenu(...handler,intervalId)
     });
-
 };
 
 const renderBestScore = (bestScoreCont) => {
@@ -167,7 +190,7 @@ const renderBestScore = (bestScoreCont) => {
     bestScoreCont.innerHTML = getBestScoreHTML();
 };
 
-const showMenu = (gameBody,intervalId,gameOver) => {
+const showMenu = (gameBody,gameOver,intervalId) => {
     clearInterval(intervalId);
     gameBody.classList.add('game-body-menu-open');
     gameOver.classList.remove('active');
@@ -202,7 +225,7 @@ const startGame = (gameBody,parent,gameTimer,gameStepsCount) => {
     }
 
     const chipsList = [...parent.children];
-    chipsList.forEach(function(item, i) {
+    chipsList.forEach((item, i) => {
         item.style.order = numArr[i];
     });
 
@@ -250,7 +273,7 @@ const bestScores = (gameBody,gameField,gameTimer,gameStepsCount,bestScoreBlock) 
             return first[1] - last[1];
         });
 
-        bestScoresArr.forEach(function(item, i) {
+        bestScoresArr.forEach((item, i) => {
             if (i < maxScoresRowCount) {
                 const bestScoreRow = document.createElement('p');
                 bestScoreRow.innerText = i + 1 + ') ' + item;
@@ -276,7 +299,7 @@ const loadGame = (gameBody,gameField,gameTimer,gameStepsCount) => {
         shuffle(numArr);
     }
 
-    chipsList.forEach(function(item, i) {
+    chipsList.forEach((item, i) => {
         item.style.order = numArr[i];
     });
 
@@ -303,13 +326,15 @@ const moveChip = (gameBody,gameField,that,gameStepsCount,gameAudio,playSound,gam
     const emptyElem = gameField.querySelector('.empty');
     const emptyElemPosition = +emptyElem.style.order;
 
-    if ( ( emptyElemPosition === currentElemId - 4 || emptyElemPosition === currentElemId + 4 ) ||
+    const isChipCanMove = ( emptyElemPosition === currentElemId - 4 || emptyElemPosition === currentElemId + 4 ) ||
         ( currentElemId % 4 === 0 && emptyElemPosition === currentElemId + 1 ) ||
         ( currentElemId % 4 === 3 && emptyElemPosition === currentElemId - 1 ) ||
         ( currentElemId % 4 === 1 && emptyElemPosition === currentElemId - 1 ) ||
         ( currentElemId % 4 === 1 && emptyElemPosition === currentElemId + 1 ) ||
         ( currentElemId % 4 === 2 && emptyElemPosition === currentElemId - 1 ) ||
-        ( currentElemId % 4 === 2 && emptyElemPosition === currentElemId + 1 ) ) {
+        ( currentElemId % 4 === 2 && emptyElemPosition === currentElemId + 1 );
+
+    if (isChipCanMove) {
 
         if (playSound) {
             gameAudio.currentTime = 0;
@@ -345,7 +370,7 @@ const moveChip = (gameBody,gameField,that,gameStepsCount,gameAudio,playSound,gam
 
             let isGameOver = true;
 
-            gameFieldList.forEach(function(item, i) {
+            gameFieldList.forEach((item) => {
                 if ( item.dataset.id !== item.style.order ) {
                     isGameOver = false;
                 }
@@ -372,7 +397,6 @@ const moveChip = (gameBody,gameField,that,gameStepsCount,gameAudio,playSound,gam
 
     gameField.querySelector('.empty');
 };
-
 
 document.addEventListener('DOMContentLoaded', function(){
     createGame();
