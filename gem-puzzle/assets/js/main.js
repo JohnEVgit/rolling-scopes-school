@@ -5,13 +5,8 @@ import {startTimer,addZero,setZeroTime,setTimeByLocalStorage,intervalId,timeOnSi
 let animating = false;
 let playSound = true;
 
-const createGame = () => {
-
-    const fragment = document.createDocumentFragment();
-    const bodyElem = document.body;
-
-    const getBodyHTML = () => {
-        return `
+const getBodyHTML = () => {
+    return `
         <audio src="assets/audio/sound.mp3"></audio>
         <div class="game-body game-body-menu-open">
             <div class="game-info"></div>
@@ -23,15 +18,19 @@ const createGame = () => {
             </div>
         </div>
     `
-    };
+};
+
+const createGame = () => {
+
+    const fragment = document.createDocumentFragment();
+    const bodyElem = document.body;
+
     bodyElem.innerHTML = getBodyHTML();
 
     const gameBody = bodyElem.querySelector('.game-body');
     const gameField = bodyElem.querySelector('.game-field');
-    const gameAudio = bodyElem.querySelector('audio');
     const gameOver = bodyElem.querySelector('.game-over-text');
     const gameInfo = bodyElem.querySelector('.game-info');
-    const gameMenu = bodyElem.querySelector('.game-menu');
     const bestScoreCont = bodyElem.querySelector('.best-score-cont');
 
     let gameFieldSize = 16;
@@ -54,11 +53,10 @@ const createGame = () => {
 
         keyElement.addEventListener('click', function () {
             let that = this;
-            moveChip(gameBody,gameField,that,gameStepsCount,gameAudio,playSound,gameOver);
+            moveChip(that,gameStepsCount,playSound,gameOver);
         });
 
         fragment.appendChild(keyElement);
-
     });
 
     gameField.appendChild(fragment);
@@ -79,11 +77,15 @@ const createGame = () => {
         bestScoreBlock.textContent = '';
     });
 
-    renderMenu(gameMenu,gameBody,gameField,gameTimer,gameStepsCount,bestScoreBlock);
+    renderMenu(gameTimer,gameStepsCount,bestScoreBlock);
 
 };
 
-const renderMenu = (gameMenu,gameBody,gameField,gameTimer,gameStepsCount,bestScoreBlock) => {
+const renderMenu = (gameTimer,gameStepsCount,bestScoreBlock) => {
+
+    const gameMenu = document.querySelector('.game-menu');
+    const gameBody = document.querySelector('.game-body');
+    const gameField = document.querySelector('.game-field');
 
     const handleGameStart = function () {
         startGame(gameBody, gameField, gameTimer, gameStepsCount);
@@ -107,7 +109,7 @@ const renderMenu = (gameMenu,gameBody,gameField,gameTimer,gameStepsCount,bestSco
         }
     };
     const handleGameScore = function () {
-        bestScores(gameBody, gameField, gameTimer, gameStepsCount, bestScoreBlock);
+        bestScores(gameBody,bestScoreBlock);
     };
 
     if (localStorage.getItem('gameField') && localStorage.getItem('gameTimer') && localStorage.getItem('gameStepsCount')) {
@@ -142,6 +144,10 @@ const renderMenu = (gameMenu,gameBody,gameField,gameTimer,gameStepsCount,bestSco
         }
     ];
 
+    gameMenu.appendChild(createMenuBtns(menuBtnsData));
+};
+
+const  createMenuBtns = (menuBtnsData) => {
     const menuContainer = document.createDocumentFragment();
 
     menuBtnsData.map((item) => {
@@ -156,8 +162,7 @@ const renderMenu = (gameMenu,gameBody,gameField,gameTimer,gameStepsCount,bestSco
 
         menuContainer.appendChild(btn);
     });
-
-    gameMenu.appendChild(menuContainer);
+    return menuContainer;
 };
 
 const getInfoHTML = (gameInfo, handler) => {
@@ -196,17 +201,8 @@ const showMenu = (gameBody,gameOver,intervalId) => {
     gameOver.classList.remove('active');
 };
 
-const startGame = (gameBody,parent,gameTimer,gameStepsCount) => {
-
-    let numArr = [...Array(16).keys()];
-
-    shuffle(numArr);
-
-    let numArrObj = {...numArr};
-    let numArrObjSort = Object.keys(numArrObj).sort(function(a,b){return numArrObj[a]-numArrObj[b]});
-
+const doHasSolutionCount = (numArrObjSort) => {
     let hasSolutionCount = 0;
-
     numArrObjSort.forEach(function(item, i, arr) {
         if (+item === 15) {
             hasSolutionCount += 1 + ((i / 4) ^ 0);
@@ -219,7 +215,19 @@ const startGame = (gameBody,parent,gameTimer,gameStepsCount) => {
         }
     });
 
-    if ( hasSolutionCount % 2 ) {
+    return hasSolutionCount;
+};
+
+const startGame = (gameBody,parent,gameTimer,gameStepsCount) => {
+
+    let numArr = [...Array(16).keys()];
+
+    shuffle(numArr);
+
+    let numArrObj = {...numArr};
+    let numArrObjSort = Object.keys(numArrObj).sort(function(a,b){return numArrObj[a]-numArrObj[b]});
+
+    if ( doHasSolutionCount(numArrObjSort) % 2 ) {
         startGame(gameBody,parent,gameTimer,gameStepsCount);
         return;
     }
@@ -261,7 +269,7 @@ const saveGame = (gameBody,gameField,gameTimer,gameStepsCount) => {
     gameBody.classList.add('game-body-load-btn');
 };
 
-const bestScores = (gameBody,gameField,gameTimer,gameStepsCount,bestScoreBlock) => {
+const bestScores = (gameBody,bestScoreBlock) => {
 
     if (localStorage.getItem('bestScores')) {
         let bestScoresArr = localStorage.getItem('bestScores').split(',');
@@ -285,7 +293,6 @@ const bestScores = (gameBody,gameField,gameTimer,gameStepsCount,bestScoreBlock) 
     gameBody.classList.remove('game-body-menu-open');
     gameBody.classList.add('game-body-best-score');
 };
-
 
 const loadGame = (gameBody,gameField,gameTimer,gameStepsCount) => {
 
@@ -316,7 +323,21 @@ const loadGame = (gameBody,gameField,gameTimer,gameStepsCount) => {
     gameBody.classList.add('game-body-resume-btn');
 };
 
-const moveChip = (gameBody,gameField,that,gameStepsCount,gameAudio,playSound,gameOver) => {
+const isChipCanMove = (emptyElemPosition,currentElemId) => {
+    return ( emptyElemPosition === currentElemId - 4 || emptyElemPosition === currentElemId + 4 ) ||
+    ( currentElemId % 4 === 0 && emptyElemPosition === currentElemId + 1 ) ||
+    ( currentElemId % 4 === 3 && emptyElemPosition === currentElemId - 1 ) ||
+    ( currentElemId % 4 === 1 && emptyElemPosition === currentElemId - 1 ) ||
+    ( currentElemId % 4 === 1 && emptyElemPosition === currentElemId + 1 ) ||
+    ( currentElemId % 4 === 2 && emptyElemPosition === currentElemId - 1 ) ||
+    ( currentElemId % 4 === 2 && emptyElemPosition === currentElemId + 1 );
+};
+
+const moveChip = (that,gameStepsCount,playSound,gameOver) => {
+
+    const gameBody = document.querySelector('.game-body');
+    const gameField = document.querySelector('.game-field');
+    const gameAudio = document.querySelector('audio');
 
     if (animating) {return;}
 
@@ -326,15 +347,7 @@ const moveChip = (gameBody,gameField,that,gameStepsCount,gameAudio,playSound,gam
     const emptyElem = gameField.querySelector('.empty');
     const emptyElemPosition = +emptyElem.style.order;
 
-    const isChipCanMove = ( emptyElemPosition === currentElemId - 4 || emptyElemPosition === currentElemId + 4 ) ||
-        ( currentElemId % 4 === 0 && emptyElemPosition === currentElemId + 1 ) ||
-        ( currentElemId % 4 === 3 && emptyElemPosition === currentElemId - 1 ) ||
-        ( currentElemId % 4 === 1 && emptyElemPosition === currentElemId - 1 ) ||
-        ( currentElemId % 4 === 1 && emptyElemPosition === currentElemId + 1 ) ||
-        ( currentElemId % 4 === 2 && emptyElemPosition === currentElemId - 1 ) ||
-        ( currentElemId % 4 === 2 && emptyElemPosition === currentElemId + 1 );
-
-    if (isChipCanMove) {
+    if (isChipCanMove(emptyElemPosition,currentElemId)) {
 
         if (playSound) {
             gameAudio.currentTime = 0;
