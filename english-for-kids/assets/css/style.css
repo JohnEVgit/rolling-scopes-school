@@ -654,6 +654,13 @@ textarea {
   color: #fff;
   text-decoration: none;
 }
+.main-nav a.active {
+  background-color: #67237F;
+  cursor: default;
+}
+.switch-mode-body-play .main-nav a.active {
+  background-color: #bd005f;
+}
 .switch-mode-body-play .main-nav {
   background: #7E07A9;
 }

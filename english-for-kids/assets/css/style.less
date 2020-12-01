@@ -386,7 +386,14 @@ input, button, select, option, textarea {
   a {
     color: #fff;
     text-decoration: none;
+    &.active {
+      background-color: @mainColorHover;
+      cursor: default;
+    }
   }
+}
+.switch-mode-body-play .main-nav a.active {
+  background-color: @altColorHover;
 }
 .switch-mode-body-play .main-nav {
   background: @mainColor;

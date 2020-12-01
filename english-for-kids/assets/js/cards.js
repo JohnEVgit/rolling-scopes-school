@@ -1,52 +1,77 @@
-const cards = [ 
-  ['Action (set A)', 'Action (set B)', 'Animal (set A)', 'Animal (set B)', 'Clothes', 'Emotions'],
+const categoryes = [
+    {
+        category: 'Action (set A)',
+        image: 'assets/img/beach.svg'
+    },
+    {
+        category: 'Action (set B)',
+        image: 'assets/img/beach.svg'
+    },
+    {
+        category: 'Animal (set A)',
+        image: 'assets/img/beach.svg'
+    },
+    {
+        category: 'Animal (set B)',
+        image: 'assets/img/beach.svg'
+    },
+    {
+        category:'Clothes',
+        image: 'assets/img/beach.svg'
+    },
+    {
+        category: 'Emotions',
+        image: 'assets/img/beach.svg'
+    }
+];
+const cards = [
   [
     {
       word: 'cry',
       translation: 'плакать',
-      image: 'img/cry.jpg',
+      image: 'assets/img/beach.svg',
       audioSrc: 'audio/cry.mp3'
     },
     {
       word: 'dance',
       translation: 'танцевать',
-      image: 'img/dance.jpg',
+      image: 'assets/img/beach.svg',
       audioSrc: 'audio/dance.mp3'
     },
     {
       word: 'dive',
       translation: 'нырять',
-      image: 'img/dive.jpg',
+      image: 'assets/img/beach.svg',
       audioSrc: 'audio/dive.mp3'
     },
     {
       word: 'draw',
       translation: 'рисовать',
-      image: 'img/draw.jpg',
+      image: 'assets/img/beach.svg',
       audioSrc: 'audio/draw.mp3'
     },
     {
       word: 'fish',
       translation: 'ловить рыбу',
-      image: 'img/fish.jpg',
+      image: 'assets/img/beach.svg',
       audioSrc: 'audio/fish.mp3'
     },
     {
       word: 'fly',
       translation: 'летать',
-      image: 'img/fly.jpg',
+      image: 'assets/img/beach.svg',
       audioSrc: 'audio/fly.mp3'
     },
     {
       word: 'hug',
       translation: 'обнимать',
-      image: 'img/hug.jpg',
+      image: 'assets/img/beach.svg',
       audioSrc: 'audio/hug.mp3'
     },
     {
       word: 'jump',
       translation: 'прыгать',
-      image: 'img/jump.jpg',
+      image: 'assets/img/beach.svg',
       audioSrc: 'audio/jump.mp3'
     }
   ],
@@ -300,10 +325,10 @@ const cards = [
       audioSrc: 'audio/laugh.mp3'
     }
   ]
-]
+];
 
 
 
 
 
-export default cards;
+export {categoryes, cards};
