@@ -11,6 +11,7 @@ html {
   font-size: 16px;
   line-height: 1.4;
   height: 100%;
+  scroll-behavior: smooth;
 }
 
 ::-moz-selection {
@@ -476,31 +477,36 @@ input, button, select, option, textarea {
   flex-wrap: wrap;
   margin: 0 -6px;
 }
-.category-item {
+
+.main-categories:not(.main-categories-cards) .category-item {
+  border-radius: 15px;
+  padding-bottom: 45px;
   overflow: hidden;
+  &:hover .category-title {
+    background-color: @mainColorHover;
+  }
+}
+.main-categories.main-categories-cards .category-item {
+  perspective: 1000px;
+}
+
+.category-item {
   margin: 0 6px 12px;
   width: calc(50% - 12px);
-  background: #fff;
-  border-radius: 15px;
   text-align: center;
   color: #fff;
   font-size: 18px;
   text-decoration: none;
   position: relative;
-  padding-bottom: 45px;
-  transition: background-color 0.2s ease-out, padding-bottom 0.2s ease-out 0.3s;
-  &:hover .category-title {
-    background-color: @mainColorHover;
-  }
 }
-.switch-mode-body-play .category-item:hover .category-title {
+.switch-mode-body-play .category-item:not(.main-categories-cards):hover .category-title {
   background-color: @altColorHover;
-  transition: opacity 0.2s ease-out;
+  transition: opacity 0.2s ease;
 }
 .category-img-cont {
   position: relative;
   padding-top: 120%;
-  transition: padding-top 0.2s ease-out 0.3s;
+  transition: padding-top 0.2s ease 0.3s;
 }
 .category-img {
   position: absolute;
@@ -514,7 +520,7 @@ input, button, select, option, textarea {
   background-color: @altColor;
   margin: 0;
   padding: 10px;
-  transition: background-color 0.2s ease-out, opacity 0.2s ease-out;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
   position: absolute;
   left: 0;
   right: 0;
@@ -538,6 +544,74 @@ input, button, select, option, textarea {
   background-color: @mainColor;
 }
 
+
+.switch-mode-body-play .main-categories-cards .category-front,
+.switch-mode-body-play .main-categories-cards .category-back {
+  padding-bottom: 0;
+  transition-delay: 0s;
+}
+
+.main-categories-cards .category-front {
+  cursor: pointer;
+  &:hover .category-title {
+    background-color: @mainColorHover;
+  }
+}
+.switch-mode-body-play .category-front:hover .category-title {
+  background-color: @altColorHover;
+  transition: opacity 0.2s ease;
+}
+.main-categories-cards .category-front,
+.main-categories-cards .category-back {
+  transition: transform 0.5s ease, padding-bottom 0.2s ease 0.3s;
+  backface-visibility: hidden;
+  border-radius: 15px;
+  padding-bottom: 45px;
+  overflow: hidden;
+  position: relative;
+}
+.main-categories-cards .category-back {
+  transform: rotateY(180deg);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+.main-categories-cards .category-item.rotate .category-front {
+  transform: rotateY(180deg);
+}
+.main-categories-cards .category-item.rotate .category-back {
+  transform: rotateY(360deg);
+}
+
+.category-title-front {
+  text-align: left;
+  padding-right: 40px;
+}
+.category-rotate {
+  color: #fff;
+  padding: 0;
+  border: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 10px;
+  height: 24px;
+  width: 24px;
+  margin: auto;
+  transition: transform 0.3s ease-out;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg fill='%23fff' height='24' viewBox='0 0 1792 1792' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5T305 1387q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5T1258 1258t109.5-163.5T1408 896t-40.5-198.5T1258 534t-163.5-109.5T896 384q-98 0-188 35.5T548 521l137 138q31 30 14 69-17 40-59 40H192q-26 0-45-19t-19-45V256q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5T896 128q156 0 298 61t245 164 164 245 61 298z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+.category-item.rotate .category-rotate {
+  transform: rotate(360deg);
+}
 
 .game-control {
   display: flex;
@@ -694,6 +768,12 @@ input, button, select, option, textarea {
     margin: 0 12px 24px;
     width: calc(25% - 24px);
     font-size: 20px;
+  }
+  .main-categories-cards .category-front,
+  .main-categories-cards .category-back {
+    padding-bottom: 48px;
+  }
+  .main-categories:not(.main-categories-cards) .category-item {
     padding-bottom: 48px;
   }
   .switch-mode-body-play .main-categories-cards .category-img-cont {

@@ -15,7 +15,7 @@ const handleLoad = () => {
 
     const mainContentElem = bodyElem.querySelector('.main-content-block');
 
-    englishMode((mode) => {
+    playMode((mode) => {
         config.mode = mode;
     });
 
@@ -107,41 +107,25 @@ const loadMainPage = (mainContentElem,config) => {
 };
 
 
+
 const loadCategoryPage = (that,mainContentElem,config) => {
 
     const pageCardsList = cards[that.dataset.id];
-
     const containerHtml = document.createElement('div');
-    containerHtml.classList.add('main-categories', 'main-categories-cards');
-
     const cardListFragment = document.createDocumentFragment();
 
+    containerHtml.classList.add('main-categories', 'main-categories-cards');
     document.querySelector('.page-title').textContent = categoryes[that.dataset.id].category;
 
     pageCardsList.forEach((item,i) => {
 
-        const cardLinkElem = document.createElement('a');
+        const cardLinkElem = document.createElement('div');
         cardLinkElem.classList.add('category-item');
-        cardLinkElem.setAttribute('href', '#');
         cardLinkElem.dataset.id = i;
 
-        cardLinkElem.addEventListener('click', function () {
-            let that = this;
-
-            if (config.mode) {
-                console.log(true);
-            } else {
-                console.log(false);
-                //loadCategoryPage(that,mainContentElem);
-            }
-        });
-
-        cardLinkElem.innerHTML += `
-            <div class="category-img-cont">
-                <img class="category-img" src="${item.image}" alt="${item.word}">
-            </div>
-            <p class="category-title">${item.word}</p>
-        `;
+        renderCard(cardLinkElem,item);
+        clickCard(cardLinkElem,item,config);
+        leaveCard(cardLinkElem);
 
         cardListFragment.appendChild(cardLinkElem);
     });
@@ -152,8 +136,56 @@ const loadCategoryPage = (that,mainContentElem,config) => {
     mainContentElem.appendChild(containerHtml);
 };
 
+const renderCard = (cardLinkElem,item) => {
+    cardLinkElem.innerHTML = `
+        <div class="category-front">
+            <div class="category-img-cont">
+                <img class="category-img" src="${item.image}" alt="${item.word}">
+            </div>
+            <div class="category-title category-title-front">
+                <span>${item.word}</span>
+                <button class="category-rotate" type="button" aria-label="rotate"></button>
+            </div>
+        </div>
+        <div class="category-back">
+            <div class="category-img-cont">
+                <img class="category-img" src="${item.image}" alt="${item.word}">
+            </div>
+            <p class="category-title">${item.translation}</p>
+        </div>
+    `;
+};
 
-const englishMode = (callback) => {
+const clickCard = (cardLinkElem,item,config) => {
+    const cardFront = cardLinkElem.querySelector('.category-front');
+    cardFront.addEventListener('click', function (e) {
+        let that = this;
+
+        if (config.mode) {
+            console.log(true);
+            // TODO play mode card click
+        } else {
+            if ( e.target.classList.contains('category-rotate') ) {
+                that.closest('.category-item').classList.add('rotate')
+            } else {
+                const audio = new Audio(item.audioSrc);
+                audio.play();
+            }
+        }
+    });
+};
+
+const leaveCard = (cardLinkElem) => {
+    cardLinkElem.addEventListener('mouseleave', function () {
+        let that = this;
+        if (that.classList.contains('rotate')) {
+            that.classList.remove('rotate')
+        }
+    });
+};
+
+
+const playMode = (callback) => {
     const bodyElem = document.body;
     const thisElem = bodyElem.querySelector('.switch-mode-js');
     thisElem.addEventListener('change', () => {
