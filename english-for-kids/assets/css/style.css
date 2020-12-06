@@ -396,7 +396,7 @@ textarea {
 }
 .btn {
   padding: 8px 12px;
-  background: #7E07A9;
+  background-color: #7E07A9;
   border: none;
   color: #fff;
   border-radius: 30px;
@@ -407,10 +407,10 @@ textarea {
   background-color: #67237F;
 }
 .switch-mode-body-play .btn {
-  background: #D30068;
+  background-color: #D30068;
 }
 .switch-mode-body-play .btn:hover {
-  background-color: #bd005f;
+  background-color: #a70054;
 }
 /* ---------------------------
 *   Header style
@@ -660,7 +660,7 @@ textarea {
   cursor: default;
 }
 .switch-mode-body-play .main-nav a.active {
-  background-color: #bd005f;
+  background-color: #a70054;
 }
 .switch-mode-body-play .main-nav {
   background: #7E07A9;
@@ -752,10 +752,15 @@ textarea {
   font-size: 18px;
   text-decoration: none;
   position: relative;
+  transition: opacity 0.2s ease-out;
+}
+.category-item.active {
+  opacity: 0.3;
+  filter: blur(3px);
 }
 .switch-mode-body-play .category-item:not(.main-categories-cards):hover .category-title {
-  background-color: #bd005f;
-  transition: opacity 0.2s ease;
+  background-color: #a70054;
+  transition: background-color 0.2s ease-out, opacity 0.2s ease;
 }
 .category-img-cont {
   position: relative;
@@ -791,7 +796,7 @@ textarea {
 }
 .switch-mode-body-play .main-categories-cards .category-title {
   opacity: 0;
-  transition-delay: 0.3s;
+  transition-delay: 0s, 0.3s;
 }
 .switch-mode-body-play .category-title {
   background-color: #7E07A9;
@@ -808,8 +813,8 @@ textarea {
   background-color: #67237F;
 }
 .switch-mode-body-play .category-front:hover .category-title {
-  background-color: #bd005f;
-  transition: opacity 0.2s ease;
+  background-color: #a70054;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
 }
 .main-categories-cards .category-front,
 .main-categories-cards .category-back {
@@ -838,6 +843,12 @@ textarea {
   text-align: left;
   padding-right: 40px;
 }
+.rotate-background {
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg fill='%23fff' height='24' viewBox='0 0 1792 1792' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5T305 1387q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5T1258 1258t109.5-163.5T1408 896t-40.5-198.5T1258 534t-163.5-109.5T896 384q-98 0-188 35.5T548 521l137 138q31 30 14 69-17 40-59 40H192q-26 0-45-19t-19-45V256q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5T896 128q156 0 298 61t245 164 164 245 61 298z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
 .category-rotate {
   color: #fff;
   padding: 0;
@@ -850,10 +861,6 @@ textarea {
   width: 24px;
   margin: auto;
   transition: transform 0.3s ease-out;
-  background-color: transparent;
-  background-image: url("data:image/svg+xml,%3Csvg fill='%23fff' height='24' viewBox='0 0 1792 1792' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5T305 1387q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5T1258 1258t109.5-163.5T1408 896t-40.5-198.5T1258 534t-163.5-109.5T896 384q-98 0-188 35.5T548 521l137 138q31 30 14 69-17 40-59 40H192q-26 0-45-19t-19-45V256q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5T896 128q156 0 298 61t245 164 164 245 61 298z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-size: contain;
 }
 .category-rotate:hover {
   transform: scale(1.1);
@@ -862,12 +869,26 @@ textarea {
   transform: rotate(360deg);
 }
 .game-control {
-  display: flex;
   justify-content: space-between;
   align-items: center;
+  display: none;
+}
+.switch-mode-body-play .game-control {
+  display: flex;
 }
 .game-start-btn {
   margin-bottom: 24px;
+  height: 34px;
+  background-size: 0;
+  width: 104px;
+  padding: 8px;
+}
+.start-game-body-play .game-start-btn {
+  width: 34px;
+  font-size: 0;
+  background-size: 24px 24px;
+  background-position: 50% 50%;
+  transition: background-color 0.2s ease-out, width 0.2s ease-out, transform 0.4s ease-out;
 }
 .game-progress-stars {
   display: flex;
@@ -885,6 +906,23 @@ textarea {
 }
 .star-item.incorrect {
   opacity: 0.4;
+}
+.game-over-cont {
+  text-align: center;
+}
+.game-over-image {
+  margin: 12px auto;
+  display: block;
+  width: 500px;
+  max-width: 80vw;
+}
+.game-over-title {
+  margin: 0;
+  font-size: 30px;
+}
+.game-over-text {
+  margin: 0 0 20px;
+  font-size: 24px;
 }
 /* ---------------------------
   *   Footer style
@@ -991,6 +1029,15 @@ textarea {
   }
   .switch-mode-body-play .main-categories-cards .category-img-cont {
     padding-top: calc(120% + 48px);
+  }
+  .game-start-btn {
+    height: 43px;
+    width: 140px;
+    padding: 10px;
+  }
+  .start-game-body-play .game-start-btn {
+    width: 43px;
+    background-size: 30px 30px;
   }
   .star-item {
     width: 32px;
