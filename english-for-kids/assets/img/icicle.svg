@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.06 175">
+  <defs>
+    <clipPath id="clip-path">
+      <path fill="none" d="M.06 0h144v79.42H.06z"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <path fill="none" d="M19.92 1.66H30.6v63.97H19.92z"/>
+    </clipPath>
+    <clipPath id="clip-path-3">
+      <path fill="none" d="M43.51 15.25h6.95v27.89h-6.95z"/>
+    </clipPath>
+    <clipPath id="clip-path-4">
+      <path fill="none" d="M89.51 16.29h6.95v27.89h-6.95z"/>
+    </clipPath>
+    <clipPath id="clip-path-5">
+      <path fill="none" d="M58.26 7.08H70.3V53.4H58.26z"/>
+    </clipPath>
+    <clipPath id="clip-path-6">
+      <path fill="none" d="M115.06 12.57h10.29v42.75h-10.29z"/>
+    </clipPath>
+    <clipPath id="clip-path-7">
+      <path fill="none" d="M32.01 90.46h6.09v15.81h-6.09z"/>
+    </clipPath>
+  </defs>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_1-2" data-name="Layer 1">
+      <path fill="#387fc2" d="M.03 0h144v175H.03z"/>
+      <g clip-path="url(#clip-path)" opacity=".8">
+        <path d="M.06 0c4.5 18.17 5.5 39.84 10.5 45.75s1.5-20.08 5.5-29.08 3 29.34 8.5 43.42 8.5 21.47 11.5 18.78 3.5-51.2 4-62.2 8 33.57 11 36.79 7.75-20.79 8.12-28.79c0 0 8.15 41 12.52 40.5s7.61-34.27 8.24-37.88 2.62-5.62 3.12-11.62 9.44 20.17 9 30.08 4.13 21 5.83 23 3.7-17.87 4.2-23-2.5-11.3 0-16.69 5-16.39 8-14.39 3 11.5 6 19.75 4 9.72 3.5 18.74 1 24 4 21.24 9-32.73 10-40 3-15.75 5.5-19.75 5-6.32 5-10.5V0" fill="#8fc9e3"/>
+      </g>
+      <g clip-path="url(#clip-path-2)" opacity=".5">
+        <path d="M20.06 6.83c-.75.75 1.5 38.25 5.75 49s4.25 11 4.5 8.5.25-13.25 0-20.5-.37-19.75.19-22.75S29.05 4.71 28.31 4c-2.94-2.75-7.75-4.44-8.25 2.81" fill="#fff"/>
+      </g>
+      <g clip-path="url(#clip-path-3)" opacity=".5">
+        <path d="M43.56 16.08c-.69.57 5.5 32.5 6.5 26.25s.5-32-6.5-26.25" fill="#fff"/>
+      </g>
+      <g clip-path="url(#clip-path-4)" opacity=".5">
+        <path d="M89.56 17.12c-.69.57 5.5 32.5 6.5 26.25s.5-32-6.5-26.25" fill="#fff"/>
+      </g>
+      <g clip-path="url(#clip-path-5)" opacity=".5">
+        <path d="M58.31 12.08c.3 4.26 9 40 11 41.25s.25-15.76.75-20.76-.75-10.24-1.5-11-.25-5.66-.25-6.33-10.87-15.77-10-3.17" fill="#fff"/>
+      </g>
+      <g clip-path="url(#clip-path-6)" opacity=".5">
+        <path d="M115.06 15.25c-.17 5.45 3.5 16.62 5.5 19.1s.5 23.48 1.25 20.73 5-11.25 3-23.75-9.5-24.16-9.75-16.08" fill="#fff"/>
+      </g>
+      <g clip-path="url(#clip-path-7)" opacity=".8">
+        <path d="M34.44 90.46s-5.48 11 0 15 4.24-9.09 0-15" fill="#8fc9e3"/>
+      </g>
+    </g>
+  </g>
+</svg>
