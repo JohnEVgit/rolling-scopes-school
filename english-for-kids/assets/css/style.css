@@ -764,7 +764,7 @@ textarea {
 }
 .category-img-cont {
   position: relative;
-  padding-top: 120%;
+  padding-top: calc(125% - 45px);
   transition: padding-top 0.2s ease 0.3s;
 }
 .category-img {
@@ -792,7 +792,7 @@ textarea {
   transition-delay: 0s;
 }
 .switch-mode-body-play .main-categories-cards .category-img-cont {
-  padding-top: calc(120% + 45px);
+  padding-top: 125%;
   transition-delay: 0s;
 }
 .switch-mode-body-play .main-categories-cards .category-title {
@@ -1028,8 +1028,8 @@ textarea {
   .main-categories:not(.main-categories-cards) .category-item {
     padding-bottom: 48px;
   }
-  .switch-mode-body-play .main-categories-cards .category-img-cont {
-    padding-top: calc(120% + 48px);
+  .category-img-cont {
+    padding-top: calc(125% - 48px);
   }
   .game-start-btn {
     height: 43px;

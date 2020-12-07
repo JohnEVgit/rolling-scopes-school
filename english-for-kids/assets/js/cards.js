@@ -31,6 +31,14 @@ const categoryes = [
         category: 'Job (set B)',
         image: 'assets/img/miner.svg'
     },
+    {
+        category: 'Transportation (set A)',
+        image: 'assets/img/ambulance.svg'
+    },
+    {
+        category: 'Transportation (set B)',
+        image: 'assets/img/train.svg'
+    }
 ];
 
 const cards = [
@@ -524,7 +532,130 @@ const cards = [
             audioSrc: 'assets/audio/pronunciation_en_teacher.mp3'
         },
     ],
+    [
+        {
+            word: 'airplane',
+            translation: 'самолёт',
+            image: 'assets/img/airplane.svg',
+            audioSrc: 'assets/audio/pronunciation_en_airplane.mp3'
+        },
+        {
+            word: 'ambulance',
+            translation: 'скорая помощь',
+            image: 'assets/img/ambulance.svg',
+            audioSrc: 'assets/audio/pronunciation_en_ambulance.mp3'
+        },
+        {
+            word: 'bicycle',
+            translation: 'велосипед',
+            image: 'assets/img/bicycle.svg',
+            audioSrc: 'assets/audio/pronunciation_en_bicycle.mp3'
+        },
+        {
+            word: 'bus',
+            translation: 'автобус',
+            image: 'assets/img/bus.svg',
+            audioSrc: 'assets/audio/pronunciation_en_bus.mp3'
+        },
+        {
+            word: 'car',
+            translation: 'автомобиль',
+            image: 'assets/img/car.svg',
+            audioSrc: 'assets/audio/pronunciation_en_car.mp3'
+        },
+        {
+            word: 'fire truck',
+            translation: 'пожарная машина',
+            image: 'assets/img/fire_truck.svg',
+            audioSrc: 'assets/audio/pronunciation_en_fire_truck.mp3'
+        },
+        {
+            word: 'helicopter',
+            translation: 'вертолёт',
+            image: 'assets/img/helicopter.svg',
+            audioSrc: 'assets/audio/pronunciation_en_helicopter.mp3'
+        },
+        {
+            word: 'limo',
+            translation: 'лимузин',
+            image: 'assets/img/limo.svg',
+            audioSrc: 'assets/audio/pronunciation_en_limo.mp3'
+        },
+        {
+            word: 'motor boat',
+            translation: 'моторная лодка',
+            image: 'assets/img/motor_boat.svg',
+            audioSrc: 'assets/audio/pronunciation_en_motor_boat.mp3'
+        },
+        {
+            word: 'motorcycle',
+            translation: 'мотоцикл',
+            image: 'assets/img/motorcycle.svg',
+            audioSrc: 'assets/audio/pronunciation_en_motorcycle.mp3'
+        },
+    ],
+    [
+        {
+            word: 'rocket',
+            translation: 'ракета',
+            image: 'assets/img/rocket.svg',
+            audioSrc: 'assets/audio/pronunciation_en_rocket.mp3'
+        },
+        {
+            word: 'yacht',
+            translation: 'яхта',
+            image: 'assets/img/yacht.svg',
+            audioSrc: 'assets/audio/pronunciation_en_yacht.mp3'
+        },
+        {
+            word: 'scooter',
+            translation: 'скутер',
+            image: 'assets/img/scooter.svg',
+            audioSrc: 'assets/audio/pronunciation_en_scooter.mp3'
+        },
+        {
+            word: 'ship',
+            translation: 'корабль',
+            image: 'assets/img/ship.svg',
+            audioSrc: 'assets/audio/pronunciation_en_ship.mp3'
+        },
+        {
+            word: 'submarine',
+            translation: 'подводная лодка',
+            image: 'assets/img/submarine.svg',
+            audioSrc: 'assets/audio/pronunciation_en_submarine.mp3'
+        },
+        {
+            word: 'taxi',
+            translation: 'такси',
+            image: 'assets/img/taxi.svg',
+            audioSrc: 'assets/audio/pronunciation_en_taxi.mp3'
+        },
+        {
+            word: 'tractor',
+            translation: 'трактор',
+            image: 'assets/img/tractor.svg',
+            audioSrc: 'assets/audio/pronunciation_en_tractor.mp3'
+        },
+        {
+            word: 'train',
+            translation: 'поезд',
+            image: 'assets/img/train.svg',
+            audioSrc: 'assets/audio/pronunciation_en_train.mp3'
+        },
+        {
+            word: 'truck',
+            translation: 'грузовая машина',
+            image: 'assets/img/truck.svg',
+            audioSrc: 'assets/audio/pronunciation_en_truck.mp3'
+        },
+        {
+            word: 'van',
+            translation: 'фургон',
+            image: 'assets/img/van.svg',
+            audioSrc: 'assets/audio/pronunciation_en_van.mp3'
+        },
+    ],
 ];
-
 
 export {categoryes, cards};
