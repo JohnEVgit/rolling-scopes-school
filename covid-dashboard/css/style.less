@@ -1,0 +1,283 @@
+@import (less) "normalize.css";
+
+@mainColor: tomato;
+html {
+  color: #fff;
+  font-size: 16px;
+  line-height: 1.4;
+  height: 100%;
+}
+
+::-moz-selection {
+  background: #b3d4fc;
+  text-shadow: none;
+}
+
+::selection {
+  background: #b3d4fc;
+  text-shadow: none;
+}
+
+audio,
+canvas,
+iframe,
+img,
+svg,
+video {
+  vertical-align: middle;
+}
+
+body {
+  font-weight: normal;
+  font-family: 'Balsamiq Sans', cursive;
+  min-height: 100%;
+  background: #fcfcfc;
+  display: flex;
+  flex-direction: column;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #aa0000;
+  outline: none;
+}
+
+button, input, textarea {
+  outline: none;
+}
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+}
+.js-focus-visible .focus-visible {
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  cursor: pointer;
+}
+
+input, button, select, option, textarea {
+  color: #fff;
+  font-family: 'Balsamiq Sans', cursive;
+  font-weight: normal;
+}
+
+.hidden,
+[hidden] {
+  display: none !important;
+}
+
+.sr-only {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+.sr-only.focusable:active,
+.sr-only.focusable:focus {
+  clip: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  white-space: inherit;
+  width: auto;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.wrapper {
+  max-width: 1280px;
+  padding: 0 12px;
+  margin: 0 auto;
+}
+
+
+
+/* ---------------------------
+*   Header style
+** --------------------------- */
+
+.page-header {
+  background-color: @mainColor;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.page-title {
+  text-align: center;
+  font-size: 26px;
+  line-height: 1.1em;
+  margin: 0;
+  padding: 10px 0;
+}
+
+
+
+
+
+/* ---------------------------
+*   Main style
+** --------------------------- */
+
+.page-main {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: calc(100vh - 116px);
+}
+.table-title {
+  text-align: center;
+  margin: 0;
+  padding: 6px 0;
+  font-size: 20px;
+  background: #aa0000;
+}
+
+.countries-col {
+  width: calc(20% - 10px);
+  background-color: @mainColor;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.countries-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: auto;
+  max-height: 100%;
+}
+.countries-list-elem {
+  padding: 8px 10px 6px;
+  border-bottom: 1px solid #aa0000;
+}
+.countries-list-val {
+  color: #e4ff00;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+
+
+
+
+
+
+.map-col {
+  width: 50%;
+  background-color: @mainColor;
+}
+#mapid {
+  height: calc(100vh - 116px);
+}
+
+
+
+
+.info-col {
+  width: calc(30% - 10px);
+  background-color: @mainColor;
+  display: flex;
+  flex-direction: column;
+}
+.info-table-cont {
+  overflow: auto;
+  max-height: 100%;
+}
+.info-table {
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+  td, th {
+    padding: 8px 10px 6px;
+    border-bottom: 1px solid #aa0000;
+    &:not(:first-child) {
+      border-left: 1px solid #aa0000;
+    }
+  }
+}
+.info-table-btns-list {
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: auto 0 0;
+  li {
+    margin: 10px 5px 0;
+    .info-table-btn {
+      color: #fff;
+      background: #aa0000;
+      padding: 8px 12px 6px;
+      border: none;
+      text-align: center;
+    }
+  }
+}
+
+
+
+
+/* ---------------------------
+*   Footer style
+** --------------------------- */
+
+.page-footer {
+  padding: 12px 0;
+  background-color: @mainColor;
+  color: #fff;
+  margin-top: 10px;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-copyright {
+  display: flex;
+  align-items: center;
+}
+.footer-rsschool {
+  img {
+    width: 80px;
+    margin: -10px 0;
+  }
+}
+
+.footer-githab-link {
+  margin-right: 10px;
+  color: #fff;
+  transition: color 0.2s ease-out;
+  svg {
+    fill: currentColor;
+  }
+  &:hover {
+    color: @mainColor;
+  }
+}
+
+
+
