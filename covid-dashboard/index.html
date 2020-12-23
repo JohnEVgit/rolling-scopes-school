@@ -31,21 +31,28 @@
         <div id="mapid"></div>
     </div>
     <div class="info-col">
-        <h2 class="table-title">Cases by Country</h2>
+        <h2 class="table-title">Info</h2>
         <div class="info-table-cont">
-            <table>
-                <tr>
-                    <th>Cases</th>
-                    <th>Deaths</th>
-                    <th>Recovered</th>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </table>
+            <table class="info-table"></table>
         </div>
+        <ul class="info-table-btns-list">
+            <li>
+                <button class="info-table-btn" type="button"
+                        data-info="total">Total</button>
+            </li>
+            <li>
+                <button class="info-table-btn" type="button"
+                        data-info="totalLastDay">Total last day</button>
+            </li>
+            <li>
+                <button class="info-table-btn" type="button"
+                        data-info="totalOneThousand">Total 1 thousand</button>
+            </li>
+            <li>
+                <button class="info-table-btn" type="button"
+                        data-info="totalOneThousandLastDay">Total 1 thousand last day</button>
+            </li>
+        </ul>
     </div>
 </main>
 

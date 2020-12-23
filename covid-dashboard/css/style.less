@@ -38,6 +38,7 @@ body {
 
 ::-webkit-scrollbar {
   width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -187,13 +188,52 @@ input, button, select, option, textarea {
   width: 50%;
   background-color: @mainColor;
 }
+#mapid {
+  height: calc(100vh - 116px);
+}
+
+
+
+
 .info-col {
   width: calc(30% - 10px);
   background-color: @mainColor;
+  display: flex;
+  flex-direction: column;
 }
-
-#mapid {
-  height: calc(100vh - 116px);
+.info-table-cont {
+  overflow: auto;
+  max-height: 100%;
+}
+.info-table {
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+  td, th {
+    padding: 8px 10px 6px;
+    border-bottom: 1px solid #aa0000;
+    &:not(:first-child) {
+      border-left: 1px solid #aa0000;
+    }
+  }
+}
+.info-table-btns-list {
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: auto 0 0;
+  li {
+    margin: 10px 5px 0;
+    .info-table-btn {
+      color: #fff;
+      background: #aa0000;
+      padding: 8px 12px 6px;
+      border: none;
+      text-align: center;
+    }
+  }
 }
 
 
