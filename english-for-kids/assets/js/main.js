@@ -219,8 +219,14 @@ const clickCard = (cardLinkElem,item,config) => {
         if (config.mode) {
 
             if (config.game) {
+
                 let isGoodStar;
-                if ( cards[config.category][config.orderArr[config.orderArr.length - 1]].audioSrc === item.audioSrc && !cardLinkElem.classList.contains('active') ) {
+                const lastOrderArrNumber = config.orderArr.length - 1;
+                const lastOrderArrItem = config.orderArr[lastOrderArrNumber];
+                const isCorrectCard = cards[config.category][lastOrderArrItem].audioSrc === item.audioSrc;
+                const isCardLinkElemNotActive = !cardLinkElem.classList.contains('active');
+
+                if ( isCorrectCard && isCardLinkElemNotActive ) {
                     isGoodStar = true;
                     cardLinkElem.classList.add('active');
                     soundCorrect();
@@ -235,7 +241,7 @@ const clickCard = (cardLinkElem,item,config) => {
                         }
                     }, 1000);
 
-                } else if (!cardLinkElem.classList.contains('active')) {
+                } else if (isCardLinkElemNotActive) {
                     isGoodStar = false;
                     soundError();
                     addStar(isGoodStar,config);
@@ -260,10 +266,9 @@ const addStar = (isGoodStar,config) => {
     config.clickCardCount++;
     const gameStarsCont = document.querySelector('.game-progress-stars');
     const gameStar = document.createElement('div');
-    console.log(config.clickCardCount);
 
     if (config.clickCardCount > 20) {
-        delete gameStarsCont.firstChild.remove();
+        delete gameStarsCont.firstChild;
     }
     gameStar.classList.add('star-item');
     if (!isGoodStar) {
@@ -272,27 +277,34 @@ const addStar = (isGoodStar,config) => {
     gameStarsCont.appendChild(gameStar);
 };
 
-const gameOver = (config) => {
-    const mainContElem = document.querySelector('.main-content-block');
-    let soundFile = '';
 
-    if (config.errorCount) {
-        mainContElem.innerHTML = `
+const gameOverFailHTML = (config) => {
+   return `
             <div class="game-over-cont">
                 <img class="game-over-image" src="./assets/img/icon-sad.svg" alt="Печалька...">
                 <h2 class="game-over-title">Ups...</h2>
                 <p class="game-over-text">You made ${config.errorCount} mistakes</p>
             </div>
-        `;
-        soundFile = './assets/audio/sound-fail.mp3';
-    } else {
-        mainContElem.innerHTML = `
+        `
+};
+const gameOverSuccessHTML = () => {
+    return `
             <div class="game-over-cont">
                 <img class="game-over-image" src="./assets/img/icon-happy.svg" alt="Ура!!!">
                 <h2 class="game-over-title">Hooray!!!</h2>
                 <p class="game-over-text">You did it</p>
             </div>
-        `;
+        `
+};
+const gameOver = (config) => {
+    const mainContElem = document.querySelector('.main-content-block');
+    let soundFile = '';
+
+    if (config.errorCount) {
+        mainContElem.innerHTML = gameOverFailHTML(config);
+        soundFile = './assets/audio/sound-fail.mp3';
+    } else {
+        mainContElem.innerHTML = gameOverSuccessHTML();
         soundFile = './assets/audio/sound-success.mp3';
     }
 
@@ -356,7 +368,9 @@ const startGame = (callback,config) => {
 };
 
 const soundCurrent = (config) => {
-    const audio = new Audio(cards[config.category][config.orderArr[config.orderArr.length - 1]].audioSrc);
+    const lastOrderArrNumber = config.orderArr.length - 1;
+    const lastOrderArrItem = config.orderArr[lastOrderArrNumber];
+    const audio = new Audio(cards[config.category][lastOrderArrItem].audioSrc);
     audio.play();
 };
 const soundError = () => {
